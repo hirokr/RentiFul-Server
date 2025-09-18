@@ -11,10 +11,10 @@ generator client {
 }
 
 datasource db {
-  provider   = "postgresql"
+  provider          = "postgresql"
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-  url        = env("DATABASE_URL")
-  extensions = [postgis]
+  url               = env("DATABASE_URL")
+  extensions        = [postgis]
 }
 
 enum Highlight {
@@ -104,26 +104,40 @@ model Property {
 }
 
 model Manager {
-  id           String @id @default(uuid())
+  id           String   @id @default(uuid())
   name         String
-  email        String @unique
-  passwordHash String
-  phoneNumber  String
+  email        String   @unique
+  passwordHash String?
+  phoneNumber  String?
+  image        String?
+  provider     String? // oauth provider (google, github, etc.)
+  providerId   String? // oauth provider user id
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   managedProperties Property[]
+
+  @@unique([provider, providerId])
 }
 
 model Tenant {
-  id           String @id @default(uuid())
+  id           String   @id @default(uuid())
   name         String
-  email        String @unique
-  passwordHash String
-  phoneNumber  String
+  email        String   @unique
+  passwordHash String?
+  phoneNumber  String?
+  image        String?
+  provider     String? // oauth provider (google, github, etc.)
+  providerId   String? // oauth provider user id
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   properties   Property[]    @relation("TenantProperties")
   favorites    Property[]    @relation("TenantFavorites")
   applications Application[]
   leases       Lease[]
+
+  @@unique([provider, providerId])
 }
 
 model Location {

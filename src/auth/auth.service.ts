@@ -1,72 +1,28 @@
 import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { PrismaDbService } from '../prisma-db/prisma-db.service';
 import * as bcrypt from 'bcryptjs';
-import { LoginDto, RegisterDto } from './dto';
+
+export interface CreateUserDto {
+  email: string;
+  name: string;
+  role: 'tenant' | 'manager';
+  password?: string;
+  phoneNumber?: string;
+  image?: string;
+  provider?: string;
+  providerId?: string;
+}
+
+export interface ValidateCredentialsDto {
+  email: string;
+  password: string;
+}
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private prisma: PrismaDbService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private prisma: PrismaDbService) { }
 
-  async register(dto: RegisterDto) {
-    const { email, password, name, phoneNumber, role } = dto;
-
-    // Check if user already exists
-    const existingTenant = await this.prisma.tenant.findUnique({
-      where: { email },
-    });
-    const existingManager = await this.prisma.manager.findUnique({
-      where: { email },
-    });
-
-    if (existingTenant || existingManager) {
-      throw new ConflictException('User with this email already exists');
-    }
-
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    let user;
-    if (role === 'tenant') {
-      user = await this.prisma.tenant.create({
-        data: {
-          email,
-          passwordHash: hashedPassword,
-          name,
-          phoneNumber,
-        },
-      });
-    } else if (role === 'manager') {
-      user = await this.prisma.manager.create({
-        data: {
-          email,
-          passwordHash: hashedPassword,
-          name,
-          phoneNumber,
-        },
-      });
-    } else {
-      throw new UnauthorizedException('Invalid role');
-    }
-
-    const payload = { sub: user.id, email: user.email, role };
-    const token = this.jwtService.sign(payload);
-
-    return {
-      access_token: token,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role,
-      },
-    };
-  }
-
-  async login(dto: LoginDto) {
+  async validateCredentials(dto: ValidateCredentialsDto) {
     const { email, password } = dto;
 
     // Check tenant first
@@ -83,48 +39,172 @@ export class AuthService {
       role = 'manager';
     }
 
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+    if (!user || !user.passwordHash) {
+      return null;
     }
 
     // Verify password
     const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials');
+      return null;
     }
 
-    const payload = { sub: user.id, email: user.email, role };
-    const token = this.jwtService.sign(payload);
-
     return {
-      access_token: token,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role,
-      },
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      image: user.image,
+      role,
     };
   }
 
-  async validateUser(payload: any) {
-    const { sub, role } = payload;
-    
+  async createUser(dto: CreateUserDto) {
+    const { email, name, role, password, phoneNumber, image, provider, providerId } = dto;
+
+    // Check if user already exists
+    const existingTenant = await this.prisma.tenant.findUnique({
+      where: { email },
+    });
+    const existingManager = await this.prisma.manager.findUnique({
+      where: { email },
+    });
+
+    if (existingTenant || existingManager) {
+      throw new ConflictException('User with this email already exists');
+    }
+
+    // Hash password if provided
+    const hashedPassword = password ? await bcrypt.hash(password, 12) : null;
+
     let user;
     if (role === 'tenant') {
-      user = await this.prisma.tenant.findUnique({
-        where: { id: sub },
+      user = await this.prisma.tenant.create({
+        data: {
+          email,
+          name,
+          passwordHash: hashedPassword,
+          phoneNumber,
+          image,
+          provider,
+          providerId,
+        },
       });
     } else if (role === 'manager') {
-      user = await this.prisma.manager.findUnique({
-        where: { id: sub },
+      user = await this.prisma.manager.create({
+        data: {
+          email,
+          name,
+          passwordHash: hashedPassword,
+          phoneNumber,
+          image,
+          provider,
+          providerId,
+        },
       });
+    } else {
+      throw new UnauthorizedException('Invalid role');
+    }
+
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      image: user.image,
+      role,
+    };
+  }
+
+  async findUserByEmail(email: string) {
+    // Check tenant first
+    let user = await this.prisma.tenant.findUnique({
+      where: { email },
+    });
+    let role = 'tenant';
+
+    // If not found in tenants, check managers
+    if (!user) {
+      user = await this.prisma.manager.findUnique({
+        where: { email },
+      });
+      role = 'manager';
     }
 
     if (!user) {
-      throw new UnauthorizedException();
+      return null;
     }
 
-    return { ...user, role };
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      image: user.image,
+      role,
+    };
+  }
+
+  async findUserByProvider(provider: string, providerId: string) {
+    // Check tenant first
+    let user = await this.prisma.tenant.findUnique({
+      where: {
+        provider_providerId: {
+          provider,
+          providerId,
+        },
+      },
+    });
+    let role = 'tenant';
+
+    // If not found in tenants, check managers
+    if (!user) {
+      user = await this.prisma.manager.findUnique({
+        where: {
+          provider_providerId: {
+            provider,
+            providerId,
+          },
+        },
+      });
+      role = 'manager';
+    }
+
+    if (!user) {
+      return null;
+    }
+
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      image: user.image,
+      role,
+    };
+  }
+
+  async getUserById(id: string) {
+    // Check tenant first
+    let user = await this.prisma.tenant.findUnique({
+      where: { id },
+    });
+    let role = 'tenant';
+
+    // If not found in tenants, check managers
+    if (!user) {
+      user = await this.prisma.manager.findUnique({
+        where: { id },
+      });
+      role = 'manager';
+    }
+
+    if (!user) {
+      return null;
+    }
+
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      image: user.image,
+      role,
+    };
   }
 }

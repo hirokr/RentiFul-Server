@@ -2,13 +2,25 @@
 
 ## Authentication
 
-### Register
-- **POST** `/auth/register`
-- Body: `{ email, password, name, phoneNumber, role: 'tenant' | 'manager' }`
+**Note**: This API is designed to work with NextAuth v5. Authentication is handled by NextAuth on the frontend, and the server validates sessions.
 
-### Login
-- **POST** `/auth/login`
+### Validate Credentials (for NextAuth credentials provider)
+- **POST** `/auth/validate-credentials`
 - Body: `{ email, password }`
+- Returns user data if credentials are valid, null otherwise
+
+### Create User (for NextAuth account creation)
+- **POST** `/auth/create-user`
+- Body: `{ email, name, role: 'tenant' | 'manager', password?, phoneNumber?, image?, provider?, providerId? }`
+
+### Get User by Email
+- **GET** `/auth/user/email/:email`
+
+### Get User by Provider
+- **GET** `/auth/user/provider/:provider/:providerId`
+
+### Get User by ID
+- **GET** `/auth/user/:id`
 
 ## Properties
 
@@ -98,7 +110,6 @@ Create a `.env` file with:
 ```
 DATABASE_URL="your-postgresql-connection-string"
 SHADOW_DATABASE_URL="your-shadow-database-url"
-JWT_SECRET="your-jwt-secret"
 PORT=3000
 ```
 
@@ -110,9 +121,61 @@ PORT=3000
 4. Generate Prisma client: `npx prisma generate`
 5. Start the server: `npm run dev`
 
+## NextAuth Integration
+
+This server is designed to work with NextAuth v5 on the frontend. The authentication flow works as follows:
+
+1. **OAuth Flow**: NextAuth handles OAuth providers (Google, GitHub, etc.) and creates/updates users via the `/auth/create-user` endpoint
+2. **Credentials Flow**: NextAuth validates credentials via the `/auth/validate-credentials` endpoint
+3. **Session Validation**: Protected endpoints expect a base64-encoded user object in the Authorization header
+4. **User Management**: The server provides endpoints to find users by email, provider, or ID for NextAuth callbacks
+
+### Frontend Integration Example
+
+```typescript
+// In your NextAuth configuration
+providers: [
+  CredentialsProvider({
+    async authorize(credentials) {
+      const res = await fetch('http://localhost:3001/auth/validate-credentials', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(credentials),
+      });
+      const user = await res.json();
+      return user || null;
+    },
+  }),
+  GoogleProvider({
+    // OAuth provider config
+  }),
+],
+callbacks: {
+  async signIn({ user, account, profile }) {
+    if (account?.provider !== 'credentials') {
+      // Handle OAuth user creation/update
+      await fetch('http://localhost:3001/auth/create-user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: user.email,
+          name: user.name,
+          image: user.image,
+          provider: account.provider,
+          providerId: account.providerAccountId,
+          role: 'tenant', // or determine based on your logic
+        }),
+      });
+    }
+    return true;
+  },
+}
+```
+
 ## Key Features Implemented
 
-- JWT Authentication with role-based access control
+- NextAuth v5 integration with OAuth and credentials authentication
+- Role-based access control (tenant/manager)
 - Property management with location/geocoding (image URLs handled by frontend)
 - Application workflow (create, approve/deny)
 - Tenant favorites system
