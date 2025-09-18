@@ -11,7 +11,7 @@
 
 ### Create User (for NextAuth account creation)
 - **POST** `/auth/create-user`
-- Body: `{ email, name, role: 'tenant' | 'manager', password?, phoneNumber?, image?, provider?, providerId? }`
+- Body: `{ email, name, role: 'tenant' | 'manager', password?, phoneNumber?, image?, provider?: 'google' | 'github' | 'facebook' | 'credentials', providerId? }`
 
 ### Get User by Email
 - **GET** `/auth/user/email/:email`
@@ -21,6 +21,10 @@
 
 ### Get User by ID
 - **GET** `/auth/user/:id`
+
+### Link OAuth Account
+- **POST** `/auth/link-oauth-account`
+- Body: `{ userId, role, provider: 'google' | 'github' | 'facebook', providerId, image? }`
 
 ## Properties
 
@@ -123,7 +127,14 @@ PORT=3000
 
 ## NextAuth Integration
 
-This server is designed to work with NextAuth v5 on the frontend. The authentication flow works as follows:
+This server is designed to work with NextAuth v5 on the frontend and supports the following OAuth providers:
+
+- **Google OAuth 2.0**
+- **GitHub OAuth**
+- **Facebook Login**
+- **Credentials (email/password)**
+
+The authentication flow works as follows:
 
 1. **OAuth Flow**: NextAuth handles OAuth providers (Google, GitHub, etc.) and creates/updates users via the `/auth/create-user` endpoint
 2. **Credentials Flow**: NextAuth validates credentials via the `/auth/validate-credentials` endpoint
@@ -134,43 +145,148 @@ This server is designed to work with NextAuth v5 on the frontend. The authentica
 
 ```typescript
 // In your NextAuth configuration
-providers: [
-  CredentialsProvider({
-    async authorize(credentials) {
-      const res = await fetch('http://localhost:3001/auth/validate-credentials', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(credentials),
-      });
-      const user = await res.json();
-      return user || null;
+import { NextAuthConfig } from "next-auth"
+import Google from "next-auth/providers/google"
+import GitHub from "next-auth/providers/github"
+import Facebook from "next-auth/providers/facebook"
+import Credentials from "next-auth/providers/credentials"
+
+export const authConfig: NextAuthConfig = {
+  providers: [
+    Credentials({
+      async authorize(credentials) {
+        const res = await fetch('http://localhost:3001/auth/validate-credentials', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(credentials),
+        });
+        
+        if (!res.ok) return null;
+        const user = await res.json();
+        return user || null;
+      },
+    }),
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+    GitHub({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    }),
+    Facebook({
+      clientId: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+    }),
+  ],
+  callbacks: {
+    async signIn({ user, account, profile }) {
+      if (account?.provider !== 'credentials') {
+        try {
+          // Check if user exists by provider
+          const existingUser = await fetch(
+            `http://localhost:3001/auth/user/provider/${account.provider}/${account.providerAccountId}`
+          );
+          
+          if (existingUser.ok) {
+            // User exists, update their info
+            const userData = await existingUser.json();
+            await fetch('http://localhost:3001/auth/create-user', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                email: user.email,
+                name: user.name,
+                image: user.image,
+                provider: account.provider,
+                providerId: account.providerAccountId,
+                role: userData.role,
+              }),
+            });
+          } else {
+            // New OAuth user - create with default role
+            await fetch('http://localhost:3001/auth/create-user', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                email: user.email,
+                name: user.name,
+                image: user.image,
+                provider: account.provider,
+                providerId: account.providerAccountId,
+                role: 'tenant', // Default role for OAuth users
+              }),
+            });
+          }
+        } catch (error) {
+          console.error('Error handling OAuth sign in:', error);
+          return false;
+        }
+      }
+      return true;
     },
-  }),
-  GoogleProvider({
-    // OAuth provider config
-  }),
-],
-callbacks: {
-  async signIn({ user, account, profile }) {
-    if (account?.provider !== 'credentials') {
-      // Handle OAuth user creation/update
-      await fetch('http://localhost:3001/auth/create-user', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: user.email,
-          name: user.name,
-          image: user.image,
-          provider: account.provider,
-          providerId: account.providerAccountId,
-          role: 'tenant', // or determine based on your logic
-        }),
-      });
-    }
-    return true;
+    async jwt({ token, user, account }) {
+      if (user) {
+        token.role = user.role;
+        token.provider = user.provider;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token) {
+        session.user.id = token.sub;
+        session.user.role = token.role;
+        session.user.provider = token.provider;
+      }
+      return session;
+    },
   },
 }
 ```
+
+### Environment Variables for OAuth
+
+Add these to your `.env.local` file:
+
+```env
+# NextAuth
+NEXTAUTH_SECRET="your-nextauth-secret"
+NEXTAUTH_URL="http://localhost:3000"
+
+# Google OAuth
+GOOGLE_CLIENT_ID="your-google-client-id"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+
+# GitHub OAuth
+GITHUB_CLIENT_ID="your-github-client-id"
+GITHUB_CLIENT_SECRET="your-github-client-secret"
+
+# Facebook OAuth
+FACEBOOK_CLIENT_ID="your-facebook-app-id"
+FACEBOOK_CLIENT_SECRET="your-facebook-app-secret"
+```
+
+### OAuth Provider Setup
+
+#### Google OAuth Setup
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing one
+3. Enable Google+ API
+4. Go to Credentials → Create Credentials → OAuth 2.0 Client ID
+5. Set authorized redirect URI: `http://localhost:3000/api/auth/callback/google`
+
+#### GitHub OAuth Setup
+1. Go to GitHub Settings → Developer settings → OAuth Apps
+2. Click "New OAuth App"
+3. Set Authorization callback URL: `http://localhost:3000/api/auth/callback/github`
+4. Copy Client ID and Client Secret
+
+#### Facebook OAuth Setup
+1. Go to [Facebook Developers](https://developers.facebook.com/)
+2. Create a new app → Consumer
+3. Add Facebook Login product
+4. Set Valid OAuth Redirect URIs: `http://localhost:3000/api/auth/callback/facebook`
+5. Copy App ID and App Secret
 
 ## Key Features Implemented
 

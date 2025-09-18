@@ -1,22 +1,9 @@
 import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
 import { PrismaDbService } from '../prisma-db/prisma-db.service';
 import * as bcrypt from 'bcryptjs';
+import type { CreateUserDto, ValidateCredentialsDto } from './dto';
 
-export interface CreateUserDto {
-  email: string;
-  name: string;
-  role: 'tenant' | 'manager';
-  password?: string;
-  phoneNumber?: string;
-  image?: string;
-  provider?: string;
-  providerId?: string;
-}
 
-export interface ValidateCredentialsDto {
-  email: string;
-  password: string;
-}
 
 @Injectable()
 export class AuthService {
@@ -61,19 +48,34 @@ export class AuthService {
   async createUser(dto: CreateUserDto) {
     const { email, name, role, password, phoneNumber, image, provider, providerId } = dto;
 
-    // Check if user already exists
-    const existingTenant = await this.prisma.tenant.findUnique({
-      where: { email },
-    });
-    const existingManager = await this.prisma.manager.findUnique({
-      where: { email },
-    });
+    // For OAuth providers, check if user exists by provider first
+    if (provider && provider !== 'credentials' && providerId) {
+      const existingUser = await this.findUserByProvider(provider, providerId);
+      if (existingUser) {
+        // Update existing OAuth user
+        return this.updateOAuthUser(existingUser.id, existingUser.role, {
+          email,
+          name,
+          image,
+        });
+      }
+    }
 
-    if (existingTenant || existingManager) {
+    // Check if user already exists by email
+    const existingUser = await this.findUserByEmail(email);
+    if (existingUser) {
+      // If it's an OAuth login and user exists with credentials, link the accounts
+      if (provider && provider !== 'credentials' && providerId) {
+        return this.linkOAuthAccount(existingUser.id, existingUser.role, {
+          provider,
+          providerId,
+          image,
+        });
+      }
       throw new ConflictException('User with this email already exists');
     }
 
-    // Hash password if provided
+    // Hash password if provided (for credentials provider)
     const hashedPassword = password ? await bcrypt.hash(password, 12) : null;
 
     let user;
@@ -85,7 +87,7 @@ export class AuthService {
           passwordHash: hashedPassword,
           phoneNumber,
           image,
-          provider,
+          provider: provider || 'credentials',
           providerId,
         },
       });
@@ -97,7 +99,7 @@ export class AuthService {
           passwordHash: hashedPassword,
           phoneNumber,
           image,
-          provider,
+          provider: provider || 'credentials',
           providerId,
         },
       });
@@ -111,6 +113,71 @@ export class AuthService {
       name: user.name,
       image: user.image,
       role,
+      provider: user.provider,
+    };
+  }
+
+  async updateOAuthUser(userId: string, role: string, updateData: { email: string; name: string; image?: string }) {
+    let user;
+    if (role === 'tenant') {
+      user = await this.prisma.tenant.update({
+        where: { id: userId },
+        data: {
+          email: updateData.email,
+          name: updateData.name,
+          image: updateData.image,
+        },
+      });
+    } else {
+      user = await this.prisma.manager.update({
+        where: { id: userId },
+        data: {
+          email: updateData.email,
+          name: updateData.name,
+          image: updateData.image,
+        },
+      });
+    }
+
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      image: user.image,
+      role,
+      provider: user.provider,
+    };
+  }
+
+  async linkOAuthAccount(userId: string, role: string, oauthData: { provider: string; providerId: string; image?: string }) {
+    let user;
+    if (role === 'tenant') {
+      user = await this.prisma.tenant.update({
+        where: { id: userId },
+        data: {
+          provider: oauthData.provider,
+          providerId: oauthData.providerId,
+          image: oauthData.image || undefined,
+        },
+      });
+    } else {
+      user = await this.prisma.manager.update({
+        where: { id: userId },
+        data: {
+          provider: oauthData.provider,
+          providerId: oauthData.providerId,
+          image: oauthData.image || undefined,
+        },
+      });
+    }
+
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      image: user.image,
+      role,
+      provider: user.provider,
     };
   }
 
@@ -139,6 +206,7 @@ export class AuthService {
       name: user.name,
       image: user.image,
       role,
+      provider: user.provider,
     };
   }
 
@@ -177,6 +245,7 @@ export class AuthService {
       name: user.name,
       image: user.image,
       role,
+      provider: user.provider,
     };
   }
 
@@ -205,6 +274,7 @@ export class AuthService {
       name: user.name,
       image: user.image,
       role,
+      provider: user.provider,
     };
   }
 }

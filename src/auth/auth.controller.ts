@@ -1,16 +1,19 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
-import { AuthService, CreateUserDto, ValidateCredentialsDto } from './auth.service';
+import { Controller, Post, Body, Get, Param, HttpCode, HttpStatus } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { CreateUserDto, ValidateCredentialsDto, LinkOAuthAccountDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
   @Post('validate-credentials')
+  @HttpCode(HttpStatus.OK)
   validateCredentials(@Body() dto: ValidateCredentialsDto) {
     return this.authService.validateCredentials(dto);
   }
 
   @Post('create-user')
+  @HttpCode(HttpStatus.CREATED)
   createUser(@Body() dto: CreateUserDto) {
     return this.authService.createUser(dto);
   }
@@ -31,5 +34,15 @@ export class AuthController {
   @Get('user/:id')
   getUserById(@Param('id') id: string) {
     return this.authService.getUserById(id);
+  }
+
+  @Post('link-oauth-account')
+  @HttpCode(HttpStatus.OK)
+  linkOAuthAccount(@Body() dto: LinkOAuthAccountDto) {
+    return this.authService.linkOAuthAccount(dto.userId, dto.role, {
+      provider: dto.provider,
+      providerId: dto.providerId,
+      image: dto.image,
+    });
   }
 }

@@ -34,6 +34,3 @@ export class CreateUserDto {
   @IsOptional()
   providerId?: string;
 }
-
-// Keep old name for backward compatibility
-export const RegisterDto = CreateUserDto;
