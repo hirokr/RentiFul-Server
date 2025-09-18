@@ -1,0 +1,137 @@
+[
+  {
+    "id": "payment-1-uuid-lease-1",
+    "amountDue": 1500.0,
+    "amountPaid": 1500.0,
+    "dueDate": "2023-07-01T00:00:00Z",
+    "paymentDate": "2023-06-28T00:00:00Z",
+    "paymentStatus": "Paid",
+    "leaseId": "lease-1-uuid-alice-brown"
+  },
+  {
+    "id": "payment-2-uuid-lease-2",
+    "amountDue": 1800.0,
+    "amountPaid": 0.0,
+    "dueDate": "2023-08-01T00:00:00Z",
+    "paymentDate": "2023-07-28T00:00:00Z",
+    "paymentStatus": "Pending",
+    "leaseId": "lease-2-uuid-bob-green"
+  },
+  {
+    "id": "payment-3-uuid-lease-3",
+    "amountDue": 2200.0,
+    "amountPaid": 2200.0,
+    "dueDate": "2023-09-01T00:00:00Z",
+    "paymentDate": "2023-08-30T00:00:00Z",
+    "paymentStatus": "Paid",
+    "leaseId": "lease-3-uuid-carol-white"
+  },
+  {
+    "id": "payment-4-uuid-lease-4",
+    "amountDue": 1700.0,
+    "amountPaid": 1700.0,
+    "dueDate": "2023-07-15T00:00:00Z",
+    "paymentDate": "2023-07-14T00:00:00Z",
+    "paymentStatus": "Paid",
+    "leaseId": "lease-4-uuid-david-lee"
+  },
+  {
+    "id": "payment-5-uuid-lease-5",
+    "amountDue": 2000.0,
+    "amountPaid": 0.0,
+    "dueDate": "2023-08-15T00:00:00Z",
+    "paymentDate": "2023-08-14T00:00:00Z",
+    "paymentStatus": "Pending",
+    "leaseId": "lease-5-uuid-emma-taylor"
+  },
+  {
+    "id": "payment-6-uuid-lease-6",
+    "amountDue": 2400.0,
+    "amountPaid": 2400.0,
+    "dueDate": "2023-09-15T00:00:00Z",
+    "paymentDate": "2023-09-14T00:00:00Z",
+    "paymentStatus": "Paid",
+    "leaseId": "lease-6-uuid-frank-wilson"
+  },
+  {
+    "id": "payment-7-uuid-lease-7",
+    "amountDue": 2200.0,
+    "amountPaid": 1100.0,
+    "dueDate": "2023-10-01T00:00:00Z",
+    "paymentDate": "2023-09-25T00:00:00Z",
+    "paymentStatus": "PartiallyPaid",
+    "leaseId": "lease-7-uuid-grace-miller"
+  },
+  {
+    "id": "payment-8-uuid-lease-8",
+    "amountDue": 5000.0,
+    "amountPaid": 5000.0,
+    "dueDate": "2023-08-01T00:00:00Z",
+    "paymentDate": "2023-07-30T00:00:00Z",
+    "paymentStatus": "Paid",
+    "leaseId": "lease-8-uuid-henry-wilson"
+  },
+  {
+    "id": "payment-9-uuid-lease-9",
+    "amountDue": 3000.0,
+    "amountPaid": 1500.0,
+    "dueDate": "2023-11-01T00:00:00Z",
+    "paymentDate": "2023-10-25T00:00:00Z",
+    "paymentStatus": "PartiallyPaid",
+    "leaseId": "lease-9-uuid-isabella-garcia"
+  },
+  {
+    "id": "payment-10-uuid-lease-10",
+    "amountDue": 2000.0,
+    "amountPaid": 2000.0,
+    "dueDate": "2023-08-15T00:00:00Z",
+    "paymentDate": "2023-08-10T00:00:00Z",
+    "paymentStatus": "Paid",
+    "leaseId": "lease-10-uuid-jack-thompson"
+  },
+  {
+    "id": "payment-11-uuid-lease-11",
+    "amountDue": 1000.0,
+    "amountPaid": 0.0,
+    "dueDate": "2023-09-01T00:00:00Z",
+    "paymentDate": "2023-08-30T00:00:00Z",
+    "paymentStatus": "Pending",
+    "leaseId": "lease-11-uuid-karen-martinez"
+  },
+  {
+    "id": "payment-12-uuid-lease-12",
+    "amountDue": 1800.0,
+    "amountPaid": 1800.0,
+    "dueDate": "2023-10-01T00:00:00Z",
+    "paymentDate": "2023-09-28T00:00:00Z",
+    "paymentStatus": "Paid",
+    "leaseId": "lease-12-uuid-liam-johnson"
+  },
+  {
+    "id": "payment-13-uuid-lease-13",
+    "amountDue": 900.0,
+    "amountPaid": 450.0,
+    "dueDate": "2023-09-15T00:00:00Z",
+    "paymentDate": "2023-09-10T00:00:00Z",
+    "paymentStatus": "PartiallyPaid",
+    "leaseId": "lease-13-uuid-mia-rodriguez"
+  },
+  {
+    "id": "payment-14-uuid-lease-14",
+    "amountDue": 1500.0,
+    "amountPaid": 1500.0,
+    "dueDate": "2023-09-01T00:00:00Z",
+    "paymentDate": "2023-08-30T00:00:00Z",
+    "paymentStatus": "Paid",
+    "leaseId": "lease-14-uuid-noah-kim"
+  },
+  {
+    "id": "payment-15-uuid-lease-15",
+    "amountDue": 2500.0,
+    "amountPaid": 0.0,
+    "dueDate": "2023-10-01T00:00:00Z",
+    "paymentDate": "2023-09-28T00:00:00Z",
+    "paymentStatus": "Paid",
+    "leaseId": "lease-15-uuid-olivia-chen"
+  }
+]

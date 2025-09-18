@@ -1,0 +1,173 @@
+[
+  {
+    "id": "application-1-uuid-alice-brown",
+    "applicationDate": "2023-05-20T00:00:00Z",
+    "status": "Approved",
+    "propertyId": "property-1-uuid-sunny-downtown",
+    "tenantId": "98765432-90ab-cdef-1234-567890abcdef",
+    "name": "Alice Brown",
+    "email": "r@gmail,com",
+    "phoneNumber": "+1 (555) 111-2222",
+    "message": "I am interested in this property.",
+    "leaseId": "lease-1-uuid-alice-brown"
+  },
+  {
+    "id": "application-2-uuid-bob-green",
+    "applicationDate": "2023-05-25T00:00:00Z",
+    "status": "Pending",
+    "propertyId": "property-2-uuid-cozy-beach-house",
+    "tenantId": "87654321-90ab-cdef-1234-567890abcdef",
+    "name": "Bob Green",
+    "email": "r@gmail,com",
+    "phoneNumber": "+1 (555) 333-4444",
+    "message": "Looking forward to viewing this apartment."
+  },
+  {
+    "id": "application-3-uuid-carol-white",
+    "applicationDate": "2023-06-01T00:00:00Z",
+    "status": "Denied",
+    "propertyId": "property-3-uuid-modern-city-loft",
+    "tenantId": "817b3540-a061-707b-742a-a28391181149",
+    "name": "Carol White",
+    "email": "r@gmail,com",
+    "phoneNumber": "+1 (555) 555-6666",
+    "message": "Excited about the possibility of renting this house."
+  },
+  {
+    "id": "application-4-uuid-david-lee",
+    "applicationDate": "2023-06-10T00:00:00Z",
+    "status": "Approved",
+    "propertyId": "property-4-uuid-spacious-family-home",
+    "tenantId": "65432109-90ab-cdef-1234-567890abcdef",
+    "name": "David Lee",
+    "email": "r@gmail,com",
+    "phoneNumber": "+1 (555) 777-8888",
+    "message": "This property looks perfect for my needs.",
+    "leaseId": "lease-4-uuid-david-lee"
+  },
+  {
+    "id": "application-5-uuid-emma-taylor",
+    "applicationDate": "2023-06-15T00:00:00Z",
+    "status": "Pending",
+    "propertyId": "property-5-uuid-luxury-penthouse",
+    "tenantId": "54321098-90ab-cdef-1234-567890abcdef",
+    "name": "Emma Taylor",
+    "email": "r@gmail,com",
+    "phoneNumber": "+1 (555) 999-0000",
+    "message": "I'm very interested in this apartment."
+  },
+  {
+    "id": "application-6-uuid-frank-wilson",
+    "applicationDate": "2023-06-20T00:00:00Z",
+    "status": "Approved",
+    "propertyId": "property-6-uuid-cozy-studio-apartment",
+    "tenantId": "43210987-90ab-cdef-1234-567890abcdef",
+    "name": "Frank Wilson",
+    "email": "r@gmail,com",
+    "phoneNumber": "+1 (555) 222-3333",
+    "message": "This property seems to fit all my requirements.",
+    "leaseId": "lease-6-uuid-frank-wilson"
+  },
+  {
+    "id": "application-7-uuid-grace-miller",
+    "applicationDate": "2023-06-25T00:00:00Z",
+    "status": "Pending",
+    "propertyId": "property-3-uuid-modern-city-loft",
+    "tenantId": "32109876-90ab-cdef-1234-567890abcdef",
+    "name": "Grace Miller",
+    "email": "r@gmail,com",
+    "phoneNumber": "+1 (555) 444-5555",
+    "message": "I'm interested in this loft and would like to schedule a viewing."
+  },
+  {
+    "id": "application-8-uuid-henry-wilson",
+    "applicationDate": "2023-07-01T00:00:00Z",
+    "status": "Approved",
+    "propertyId": "property-5-uuid-luxury-penthouse",
+    "tenantId": "21098765-90ab-cdef-1234-567890abcdef",
+    "name": "Henry Wilson",
+    "email": "r@gmail,com",
+    "phoneNumber": "+1 (555) 444-5555",
+    "message": "I'm very interested in this luxury penthouse.",
+    "leaseId": "lease-8-uuid-henry-wilson"
+  },
+  {
+    "id": "application-9-uuid-isabella-garcia",
+    "applicationDate": "2023-07-05T00:00:00Z",
+    "status": "Pending",
+    "propertyId": "property-7-uuid-historic-brownstone",
+    "tenantId": "10987654-90ab-cdef-1234-567890abcdef",
+    "name": "Isabella Garcia",
+    "email": "r@gmail,com",
+    "phoneNumber": "+1 (555) 666-7777",
+    "message": "The historic brownstone looks perfect for my family."
+  },
+  {
+    "id": "application-10-uuid-jack-thompson",
+    "applicationDate": "2023-07-10T00:00:00Z",
+    "status": "Denied",
+    "propertyId": "property-2-uuid-cozy-beach-house",
+    "tenantId": "09876543-90ab-cdef-1234-567890abcdef",
+    "name": "Jack Thompson",
+    "email": "r@gmail,com",
+    "phoneNumber": "+1 (555) 888-9999",
+    "message": "I'd love to rent this beach house for the summer."
+  },
+  {
+    "id": "application-11-uuid-karen-martinez",
+    "applicationDate": "2023-07-15T00:00:00Z",
+    "status": "Pending",
+    "propertyId": "property-8-uuid-urban-micro-apartment",
+    "tenantId": "a9876543-90ab-cdef-1234-567890abcdef",
+    "name": "Karen Martinez",
+    "email": "r@gmail,com",
+    "phoneNumber": "+1 (555) 123-4567",
+    "message": "I'm interested in this micro-apartment for its central location."
+  },
+  {
+    "id": "application-12-uuid-liam-johnson",
+    "applicationDate": "2023-07-20T00:00:00Z",
+    "status": "Approved",
+    "propertyId": "property-9-uuid-mountain-view-cabin",
+    "tenantId": "b9876543-90ab-cdef-1234-567890abcdef",
+    "name": "Liam Johnson",
+    "email": "r@gmail,com",
+    "phoneNumber": "+1 (555) 987-6543",
+    "message": "The mountain view cabin looks perfect for a weekend getaway.",
+    "leaseId": "lease-12-uuid-liam-johnson"
+  },
+  {
+    "id": "application-13-uuid-mia-rodriguez",
+    "applicationDate": "2023-07-25T00:00:00Z",
+    "status": "Pending",
+    "propertyId": "property-10-uuid-eco-friendly-tiny-house",
+    "tenantId": "c9876543-90ab-cdef-1234-567890abcdef",
+    "name": "Mia Rodriguez",
+    "email": "r@gmail,com",
+    "phoneNumber": "+1 (555) 246-8135",
+    "message": "I'm curious about the eco-friendly features of this tiny house."
+  },
+  {
+    "id": "application-14-uuid-noah-kim",
+    "applicationDate": "2023-07-30T00:00:00Z",
+    "status": "Approved",
+    "propertyId": "property-1-uuid-sunny-downtown",
+    "tenantId": "d9876543-90ab-cdef-1234-567890abcdef",
+    "name": "Noah Kim",
+    "email": "r@gmail,com",
+    "phoneNumber": "+1 (555) 369-2580",
+    "message": "The downtown apartment seems ideal for my work location.",
+    "leaseId": "lease-14-uuid-noah-kim"
+  },
+  {
+    "id": "application-15-uuid-olivia-chen",
+    "applicationDate": "2023-08-05T00:00:00Z",
+    "status": "Pending",
+    "propertyId": "property-4-uuid-spacious-family-home",
+    "tenantId": "e9876543-90ab-cdef-1234-567890abcdef",
+    "name": "Olivia Chen",
+    "email": "r@gmail,com",
+    "phoneNumber": "+1 (555) 159-7531",
+    "message": "I'm looking for a spacious family home like this one."
+  }
+]

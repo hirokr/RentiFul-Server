@@ -1,0 +1,92 @@
+[
+  {
+    "id": "location-1-uuid-pasadena-ca",
+    "country": "United States",
+    "city": "Pasadena",
+    "state": "CA",
+    "address": "123 Colorado Blvd",
+    "postalCode": "91105",
+    "coordinates": "POINT(-118.144516 34.147785)"
+  },
+  {
+    "id": "location-2-uuid-santa-monica-ca",
+    "country": "United States",
+    "city": "Santa Monica",
+    "state": "CA",
+    "address": "456 Ocean Ave",
+    "postalCode": "90401",
+    "coordinates": "POINT(-118.496513 34.013654)"
+  },
+  {
+    "id": "location-3-uuid-burbank-ca",
+    "country": "United States",
+    "city": "Burbank",
+    "state": "CA",
+    "address": "789 Hollywood Way",
+    "postalCode": "91505",
+    "coordinates": "POINT(-118.328661 34.180839)"
+  },
+  {
+    "id": "location-4-uuid-long-beach-ca",
+    "country": "United States",
+    "city": "Long Beach",
+    "state": "CA",
+    "address": "101 Pine Ave",
+    "postalCode": "90802",
+    "coordinates": "POINT(-118.192604 33.766720)"
+  },
+  {
+    "id": "location-5-uuid-new-york-ny",
+    "country": "United States",
+    "city": "New York",
+    "state": "NY",
+    "address": "555 Manhattan Ave",
+    "postalCode": "10001",
+    "coordinates": "POINT(-74.005941 40.712784)"
+  },
+  {
+    "id": "location-6-uuid-malibu-ca",
+    "country": "United States",
+    "city": "Malibu",
+    "state": "CA",
+    "address": "888 Malibu Road",
+    "postalCode": "90265",
+    "coordinates": "POINT(-118.774518 34.025922)"
+  },
+  {
+    "id": "location-7-uuid-glendale-ca",
+    "country": "United States",
+    "city": "Glendale",
+    "state": "CA",
+    "address": "777 Brand Blvd",
+    "postalCode": "91203",
+    "coordinates": "POINT(-118.254708 34.142508)"
+  },
+  {
+    "id": "location-8-uuid-torrance-ca",
+    "country": "United States",
+    "city": "Torrance",
+    "state": "CA",
+    "address": "555 Torrance Blvd",
+    "postalCode": "90503",
+    "coordinates": "POINT(-118.352575 33.835849)"
+  },
+  {
+    "id": "location-9-uuid-miami-fl",
+    "country": "United States",
+    "city": "Miami",
+    "state": "FL",
+    "address": "1234 Ocean Dr",
+    "postalCode": "33139",
+    "coordinates": "POINT(-80.130045 25.782551)"
+  },
+  {
+    "id": "location-10-uuid-beverly-hills-ca",
+    "country": "United States",
+    "city": "Beverly Hills",
+    "state": "CA",
+    "address": "789 Rodeo Dr",
+    "postalCode": "90210",
+    "coordinates": "POINT(-118.400356 34.073620)"
+  }
+]
