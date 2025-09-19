@@ -86,24 +86,78 @@ async function deleteAllData(orderedFileNames: string[]) {
   }
 }
 
+async function seedUsers() {
+  const dataDirectory = path.join(__dirname, 'seedData');
+
+  // Load manager data and add role
+  const managerFilePath = path.join(dataDirectory, 'manager.json');
+  const managerData = JSON.parse(fs.readFileSync(managerFilePath, 'utf-8'));
+
+  // Load tenant data and add role
+  const tenantFilePath = path.join(dataDirectory, 'tenant.json');
+  const tenantData = JSON.parse(fs.readFileSync(tenantFilePath, 'utf-8'));
+
+  // Seed managers with MANAGER role
+  for (const manager of managerData) {
+    try {
+      const { image, ...managerWithoutImage } = manager;
+      await prisma.user.create({
+        data: {
+          ...managerWithoutImage,
+          role: 'MANAGER',
+          profilePicture: image, // Map image to profilePicture
+          hasSelectedRole: true, // Existing users have already selected their role
+        },
+      });
+    } catch (error) {
+      console.error(`Error seeding manager ${manager.email}:`, error);
+    }
+  }
+  console.log(`Seeded ${managerData.length} managers`);
+
+  // Seed tenants with TENANT role
+  for (const tenant of tenantData) {
+    try {
+      const { image, ...tenantWithoutImage } = tenant;
+      await prisma.user.create({
+        data: {
+          ...tenantWithoutImage,
+          role: 'TENANT',
+          profilePicture: image, // Map image to profilePicture
+          hasSelectedRole: true, // Existing users have already selected their role
+        },
+      });
+    } catch (error) {
+      console.error(`Error seeding tenant ${tenant.email}:`, error);
+    }
+  }
+  console.log(`Seeded ${tenantData.length} tenants`);
+}
+
 async function main() {
   const dataDirectory = path.join(__dirname, 'seedData');
 
   const orderedFileNames = [
     'location.json', // No dependencies
-    'manager.json', // No dependencies
-    'property.json', // Depends on location and manager
-    'tenant.json', // No dependencies
-    'lease.json', // Depends on property and tenant
-    'application.json', // Depends on property and tenant
+    'property.json', // Depends on location and user (manager)
+    'lease.json', // Depends on property and user (tenant)
+    'application.json', // Depends on property and user (tenant)
     'payment.json', // Depends on lease
   ];
 
   // Delete all existing data
-  await deleteAllData(orderedFileNames);
+  await deleteAllData([...orderedFileNames, 'manager.json', 'tenant.json']);
 
-  // Seed data
-  for (const fileName of orderedFileNames) {
+  // Seed locations first
+  const locationFilePath = path.join(dataDirectory, 'location.json');
+  const locationData = JSON.parse(fs.readFileSync(locationFilePath, 'utf-8'));
+  await insertLocationData(locationData);
+
+  // Seed users (consolidated managers and tenants)
+  await seedUsers();
+
+  // Seed remaining data
+  for (const fileName of orderedFileNames.slice(1)) { // Skip location.json as it's already seeded
     const filePath = path.join(dataDirectory, fileName);
     const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
     const modelName = toPascalCase(
@@ -111,24 +165,17 @@ async function main() {
     );
     const modelNameCamel = toCamelCase(modelName);
 
-    if (modelName === 'Location') {
-      await insertLocationData(jsonData);
-    } else {
-      const model = (prisma as any)[modelNameCamel];
-      try {
-        for (const item of jsonData) {
-          await model.create({
-            data: item,
-          });
-        }
-        console.log(`Seeded ${modelName} with data from ${fileName}`);
-      } catch (error) {
-        console.error(`Error seeding data for ${modelName}:`, error);
+    const model = (prisma as any)[modelNameCamel];
+    try {
+      for (const item of jsonData) {
+        await model.create({
+          data: item,
+        });
       }
+      console.log(`Seeded ${modelName} with data from ${fileName}`);
+    } catch (error) {
+      console.error(`Error seeding data for ${modelName}:`, error);
     }
-
-    // Reset the sequence after seeding each model
-    await resetSequence(modelName);
 
     await sleep(1000);
   }

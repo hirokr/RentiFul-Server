@@ -4,69 +4,119 @@
     "name": "John Smith",
     "email": "john.smith@example.com",
     "passwordHash": "$2b$10$example.hash.for.john.smith",
-    "phoneNumber": "+1 (555) 123-4567"
+    "phoneNumber": "+1 (555) 123-4567",
+    "image": null,
+    "provider": null,
+    "providerId": null,
+    "createdAt": "2023-01-15T10:00:00.000Z",
+    "updatedAt": "2023-01-15T10:00:00.000Z"
   },
   {
     "id": "23456789-90ab-cdef-1234-567890abcdef",
     "name": "Sarah Johnson",
     "email": "sarah.johnson@example.com",
     "passwordHash": "$2b$10$example.hash.for.sarah.johnson",
-    "phoneNumber": "+1 (555) 987-6543"
+    "phoneNumber": "+1 (555) 987-6543",
+    "image": null,
+    "provider": null,
+    "providerId": null,
+    "createdAt": "2023-01-20T10:00:00.000Z",
+    "updatedAt": "2023-01-20T10:00:00.000Z"
   },
   {
     "id": "34567890-90ab-cdef-1234-567890abcdef",
     "name": "Michael Brown",
     "email": "michael.brown@example.com",
     "passwordHash": "$2b$10$example.hash.for.michael.brown",
-    "phoneNumber": "+1 (555) 456-7890"
+    "phoneNumber": "+1 (555) 456-7890",
+    "image": null,
+    "provider": null,
+    "providerId": null,
+    "createdAt": "2023-01-25T10:00:00.000Z",
+    "updatedAt": "2023-01-25T10:00:00.000Z"
   },
   {
     "id": "45678901-90ab-cdef-1234-567890abcdef",
     "name": "Emily Davis",
     "email": "emily.davis@example.com",
     "passwordHash": "$2b$10$example.hash.for.emily.davis",
-    "phoneNumber": "+1 (555) 234-5678"
+    "phoneNumber": "+1 (555) 234-5678",
+    "image": null,
+    "provider": null,
+    "providerId": null,
+    "createdAt": "2023-02-01T10:00:00.000Z",
+    "updatedAt": "2023-02-01T10:00:00.000Z"
   },
   {
     "id": "56789012-90ab-cdef-1234-567890abcdef",
     "name": "Robert Wilson",
     "email": "robert.wilson@example.com",
     "passwordHash": "$2b$10$example.hash.for.robert.wilson",
-    "phoneNumber": "+1 (555) 876-5432"
+    "phoneNumber": "+1 (555) 876-5432",
+    "image": null,
+    "provider": null,
+    "providerId": null,
+    "createdAt": "2023-02-05T10:00:00.000Z",
+    "updatedAt": "2023-02-05T10:00:00.000Z"
   },
   {
     "id": "67890123-90ab-cdef-1234-567890abcdef",
     "name": "Lisa Thompson",
     "email": "lisa.thompson@example.com",
     "passwordHash": "$2b$10$example.hash.for.lisa.thompson",
-    "phoneNumber": "+1 (555) 345-6789"
+    "phoneNumber": "+1 (555) 345-6789",
+    "image": null,
+    "provider": null,
+    "providerId": null,
+    "createdAt": "2023-02-10T10:00:00.000Z",
+    "updatedAt": "2023-02-10T10:00:00.000Z"
   },
   {
     "id": "78901234-90ab-cdef-1234-567890abcdef",
     "name": "Daniel Martinez",
     "email": "daniel.martinez@example.com",
     "passwordHash": "$2b$10$example.hash.for.daniel.martinez",
-    "phoneNumber": "+1 (555) 789-0123"
+    "phoneNumber": "+1 (555) 789-0123",
+    "image": null,
+    "provider": null,
+    "providerId": null,
+    "createdAt": "2023-02-15T10:00:00.000Z",
+    "updatedAt": "2023-02-15T10:00:00.000Z"
   },
   {
     "id": "89012345-90ab-cdef-1234-567890abcdef",
     "name": "Olivia Garcia",
     "email": "olivia.garcia@example.com",
     "passwordHash": "$2b$10$example.hash.for.olivia.garcia",
-    "phoneNumber": "+1 (555) 678-9012"
+    "phoneNumber": "+1 (555) 678-9012",
+    "image": null,
+    "provider": null,
+    "providerId": null,
+    "createdAt": "2023-02-20T10:00:00.000Z",
+    "updatedAt": "2023-02-20T10:00:00.000Z"
   },
   {
     "id": "90123456-90ab-cdef-1234-567890abcdef",
     "name": "Ethan Rodriguez",
     "email": "ethan.rodriguez@example.com",
     "passwordHash": "$2b$10$example.hash.for.ethan.rodriguez",
-    "phoneNumber": "+1 (555) 567-8901"
+    "phoneNumber": "+1 (555) 567-8901",
+    "image": null,
+    "provider": null,
+    "providerId": null,
+    "createdAt": "2023-02-25T10:00:00.000Z",
+    "updatedAt": "2023-02-25T10:00:00.000Z"
   },
   {
     "id": "01234567-90ab-cdef-1234-567890abcdef",
     "name": "Sophia Kim",
     "email": "sophia.kim@example.com",
     "passwordHash": "$2b$10$example.hash.for.sophia.kim",
-    "phoneNumber": "+1 (555) 456-7890"
+    "phoneNumber": "+1 (555) 456-7890",
+    "image": null,
+    "provider": null,
+    "providerId": null,
+    "createdAt": "2023-03-01T10:00:00.000Z",
+    "updatedAt": "2023-03-01T10:00:00.000Z"
   }
 ]

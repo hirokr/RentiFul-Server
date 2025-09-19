@@ -1,19 +1,12 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider        = "prisma-client-js"
-  // output          = "../generated/prisma"
   previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
   provider          = "postgresql"
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
   url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
   extensions        = [postgis]
 }
 
@@ -73,6 +66,35 @@ enum PaymentStatus {
   Overdue
 }
 
+enum UserRole {
+  TENANT
+  MANAGER
+}
+
+model User {
+  id              String   @id @default(uuid())
+  name            String
+  email           String   @unique
+  passwordHash    String? // null for OAuth users
+  phoneNumber     String?
+  profilePicture  String? // UploadThing URL
+  role            UserRole @default(TENANT)
+  provider        String? // oauth provider (google, github, credentials)
+  providerId      String? // oauth provider user id
+  hasSelectedRole Boolean  @default(false) // tracks if user completed role selection
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations based on role
+  managedProperties Property[]    @relation("ManagerProperties") // if role = MANAGER
+  tenantProperties  Property[]    @relation("TenantProperties") // if role = TENANT
+  favorites         Property[]    @relation("TenantFavorites") // tenant favorited properties
+  applications      Application[]
+  leases            Lease[]
+
+  @@unique([provider, providerId])
+}
+
 model Property {
   id                String       @id @default(uuid())
   name              String
@@ -96,60 +118,22 @@ model Property {
   managerId         String
 
   location     Location      @relation(fields: [locationId], references: [id], onDelete: Cascade)
-  manager      Manager       @relation(fields: [managerId], references: [id], onDelete: Cascade)
+  manager      User          @relation("ManagerProperties", fields: [managerId], references: [id], onDelete: Cascade)
   leases       Lease[]
   applications Application[]
-  favoritedBy  Tenant[]      @relation("TenantFavorites")
-  tenants      Tenant[]      @relation("TenantProperties")
-}
-
-model Manager {
-  id           String   @id @default(uuid())
-  name         String
-  email        String   @unique
-  passwordHash String?
-  phoneNumber  String?
-  image        String?
-  provider     String? // oauth provider (google, github, etc.)
-  providerId   String? // oauth provider user id
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  managedProperties Property[]
-
-  @@unique([provider, providerId])
-}
-
-model Tenant {
-  id           String   @id @default(uuid())
-  name         String
-  email        String   @unique
-  passwordHash String?
-  phoneNumber  String?
-  image        String?
-  provider     String? // oauth provider (google, github, etc.)
-  providerId   String? // oauth provider user id
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  properties   Property[]    @relation("TenantProperties")
-  favorites    Property[]    @relation("TenantFavorites")
-  applications Application[]
-  leases       Lease[]
-
-  @@unique([provider, providerId])
+  favoritedBy  User[]        @relation("TenantFavorites")
+  tenants      User[]        @relation("TenantProperties")
 }
 
 model Location {
-  id          String                                @id @default(uuid())
+  id          String                   @id @default(uuid())
   address     String
   city        String
   state       String
   country     String
   postalCode  String
-  coordinates Unsupported("geography(Point, 4326)")
-
-  properties Property[]
+  coordinates Unsupported("geography")
+  properties  Property[]
 }
 
 model Application {
@@ -165,7 +149,7 @@ model Application {
   leaseId         String?           @unique
 
   property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  tenant   Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenant   User     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   lease    Lease?   @relation(fields: [leaseId], references: [id], onDelete: Cascade)
 }
 
@@ -179,7 +163,7 @@ model Lease {
   tenantId   String
 
   property    Property     @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  tenant      Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenant      User         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   application Application?
   payments    Payment[]
 }
@@ -194,4 +178,13 @@ model Payment {
   leaseId       String
 
   lease Lease @relation(fields: [leaseId], references: [id], onDelete: Cascade)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model spatial_ref_sys {
+  srid      Int     @id
+  auth_name String? @db.VarChar(256)
+  auth_srid Int?
+  srtext    String? @db.VarChar(2048)
+  proj4text String? @db.VarChar(2048)
 }
