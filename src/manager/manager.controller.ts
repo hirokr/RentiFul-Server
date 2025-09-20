@@ -3,17 +3,13 @@ import {
   Get,
   Put,
   Body,
-  UseGuards,
 } from '@nestjs/common';
 import { ManagerService } from './manager.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
+import { RequireManager } from '../auth/decorators/auth-roles.decorator';
 import { GetUser } from '../auth/decorators/get-user.decorator';
 
 @Controller('managers')
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('MANAGER')
+@RequireManager()
 export class ManagerController {
   constructor(private readonly managerService: ManagerService) { }
 

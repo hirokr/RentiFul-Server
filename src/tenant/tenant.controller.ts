@@ -6,17 +6,13 @@ import {
   Delete,
   Param,
   Body,
-  UseGuards,
 } from '@nestjs/common';
 import { TenantService } from './tenant.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
+import { RequireTenant } from '../auth/decorators/auth-roles.decorator';
 import { GetUser } from '../auth/decorators/get-user.decorator';
 
 @Controller('tenants')
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('TENANT')
+@RequireTenant()
 export class TenantController {
   constructor(private readonly tenantService: TenantService) { }
 

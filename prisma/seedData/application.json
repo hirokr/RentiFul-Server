@@ -6,7 +6,7 @@
     "propertyId": "property-1-uuid-sunny-downtown",
     "tenantId": "98765432-90ab-cdef-1234-567890abcdef",
     "name": "Alice Brown",
-    "email": "r@gmail,com",
+    "email": "alice.brown@example.com",
     "phoneNumber": "+1 (555) 111-2222",
     "message": "I am interested in this property.",
     "leaseId": "lease-1-uuid-alice-brown"
@@ -18,7 +18,7 @@
     "propertyId": "property-2-uuid-cozy-beach-house",
     "tenantId": "87654321-90ab-cdef-1234-567890abcdef",
     "name": "Bob Green",
-    "email": "r@gmail,com",
+    "email": "bob.green@example.com",
     "phoneNumber": "+1 (555) 333-4444",
     "message": "Looking forward to viewing this apartment."
   },
@@ -29,7 +29,7 @@
     "propertyId": "property-3-uuid-modern-city-loft",
     "tenantId": "817b3540-a061-707b-742a-a28391181149",
     "name": "Carol White",
-    "email": "r@gmail,com",
+    "email": "carol.white@example.com",
     "phoneNumber": "+1 (555) 555-6666",
     "message": "Excited about the possibility of renting this house."
   },
@@ -40,7 +40,7 @@
     "propertyId": "property-4-uuid-spacious-family-home",
     "tenantId": "65432109-90ab-cdef-1234-567890abcdef",
     "name": "David Lee",
-    "email": "r@gmail,com",
+    "email": "david.lee@example.com",
     "phoneNumber": "+1 (555) 777-8888",
     "message": "This property looks perfect for my needs.",
     "leaseId": "lease-4-uuid-david-lee"
@@ -52,7 +52,7 @@
     "propertyId": "property-5-uuid-luxury-penthouse",
     "tenantId": "54321098-90ab-cdef-1234-567890abcdef",
     "name": "Emma Taylor",
-    "email": "r@gmail,com",
+    "email": "emma.taylor@example.com",
     "phoneNumber": "+1 (555) 999-0000",
     "message": "I'm very interested in this apartment."
   },
@@ -63,7 +63,7 @@
     "propertyId": "property-6-uuid-cozy-studio-apartment",
     "tenantId": "43210987-90ab-cdef-1234-567890abcdef",
     "name": "Frank Wilson",
-    "email": "r@gmail,com",
+    "email": "frank.wilson@example.com",
     "phoneNumber": "+1 (555) 222-3333",
     "message": "This property seems to fit all my requirements.",
     "leaseId": "lease-6-uuid-frank-wilson"
@@ -75,7 +75,7 @@
     "propertyId": "property-3-uuid-modern-city-loft",
     "tenantId": "32109876-90ab-cdef-1234-567890abcdef",
     "name": "Grace Miller",
-    "email": "r@gmail,com",
+    "email": "grace.miller@example.com",
     "phoneNumber": "+1 (555) 444-5555",
     "message": "I'm interested in this loft and would like to schedule a viewing."
   },
@@ -86,7 +86,7 @@
     "propertyId": "property-5-uuid-luxury-penthouse",
     "tenantId": "21098765-90ab-cdef-1234-567890abcdef",
     "name": "Henry Wilson",
-    "email": "r@gmail,com",
+    "email": "henry.wilson@example.com",
     "phoneNumber": "+1 (555) 444-5555",
     "message": "I'm very interested in this luxury penthouse.",
     "leaseId": "lease-8-uuid-henry-wilson"
@@ -98,7 +98,7 @@
     "propertyId": "property-7-uuid-historic-brownstone",
     "tenantId": "10987654-90ab-cdef-1234-567890abcdef",
     "name": "Isabella Garcia",
-    "email": "r@gmail,com",
+    "email": "isabella.garcia@example.com",
     "phoneNumber": "+1 (555) 666-7777",
     "message": "The historic brownstone looks perfect for my family."
   },
@@ -109,7 +109,7 @@
     "propertyId": "property-2-uuid-cozy-beach-house",
     "tenantId": "09876543-90ab-cdef-1234-567890abcdef",
     "name": "Jack Thompson",
-    "email": "r@gmail,com",
+    "email": "jack.thompson@example.com",
     "phoneNumber": "+1 (555) 888-9999",
     "message": "I'd love to rent this beach house for the summer."
   },
@@ -120,7 +120,7 @@
     "propertyId": "property-8-uuid-urban-micro-apartment",
     "tenantId": "a9876543-90ab-cdef-1234-567890abcdef",
     "name": "Karen Martinez",
-    "email": "r@gmail,com",
+    "email": "karen.martinez@example.com",
     "phoneNumber": "+1 (555) 123-4567",
     "message": "I'm interested in this micro-apartment for its central location."
   },
@@ -131,7 +131,7 @@
     "propertyId": "property-9-uuid-mountain-view-cabin",
     "tenantId": "b9876543-90ab-cdef-1234-567890abcdef",
     "name": "Liam Johnson",
-    "email": "r@gmail,com",
+    "email": "liam.johnson@example.com",
     "phoneNumber": "+1 (555) 987-6543",
     "message": "The mountain view cabin looks perfect for a weekend getaway.",
     "leaseId": "lease-12-uuid-liam-johnson"
@@ -143,7 +143,7 @@
     "propertyId": "property-10-uuid-eco-friendly-tiny-house",
     "tenantId": "c9876543-90ab-cdef-1234-567890abcdef",
     "name": "Mia Rodriguez",
-    "email": "r@gmail,com",
+    "email": "mia.rodriguez@example.com",
     "phoneNumber": "+1 (555) 246-8135",
     "message": "I'm curious about the eco-friendly features of this tiny house."
   },
@@ -154,7 +154,7 @@
     "propertyId": "property-1-uuid-sunny-downtown",
     "tenantId": "d9876543-90ab-cdef-1234-567890abcdef",
     "name": "Noah Kim",
-    "email": "r@gmail,com",
+    "email": "noah.kim@example.com",
     "phoneNumber": "+1 (555) 369-2580",
     "message": "The downtown apartment seems ideal for my work location.",
     "leaseId": "lease-14-uuid-noah-kim"
@@ -166,7 +166,7 @@
     "propertyId": "property-4-uuid-spacious-family-home",
     "tenantId": "e9876543-90ab-cdef-1234-567890abcdef",
     "name": "Olivia Chen",
-    "email": "r@gmail,com",
+    "email": "olivia.chen@example.com",
     "phoneNumber": "+1 (555) 159-7531",
     "message": "I'm looking for a spacious family home like this one."
   }

@@ -122,6 +122,18 @@ export class AuthService {
     return user;
   }
 
+  async validateUserById(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
+    return user;
+  }
+
   // Method for NextAuth.js integration
   async findUserByEmail(email: string) {
     return this.prisma.user.findUnique({

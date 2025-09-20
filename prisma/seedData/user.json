@@ -1,0 +1,202 @@
+[
+  {
+    "id": "user-manager-010be580-60a1-70ae-780e-18a6fd94ad32",
+    "name": "John Smith",
+    "email": "john.smith@example.com",
+    "passwordHash": "$2b$10$example.hash.for.john.smith",
+    "phoneNumber": "+1 (555) 123-4567",
+    "role": "MANAGER"
+  },
+  {
+    "id": "user-manager-23456789-90ab-cdef-1234-567890abcdef",
+    "name": "Sarah Johnson",
+    "email": "sarah.johnson@example.com",
+    "passwordHash": "$2b$10$example.hash.for.sarah.johnson",
+    "phoneNumber": "+1 (555) 987-6543",
+    "role": "MANAGER"
+  },
+  {
+    "id": "user-manager-34567890-90ab-cdef-1234-567890abcdef",
+    "name": "Michael Brown",
+    "email": "michael.brown@example.com",
+    "passwordHash": "$2b$10$example.hash.for.michael.brown",
+    "phoneNumber": "+1 (555) 456-7890",
+    "role": "MANAGER"
+  },
+  {
+    "id": "user-manager-45678901-90ab-cdef-1234-567890abcdef",
+    "name": "Emily Davis",
+    "email": "emily.davis@example.com",
+    "passwordHash": "$2b$10$example.hash.for.emily.davis",
+    "phoneNumber": "+1 (555) 234-5678",
+    "role": "MANAGER"
+  },
+  {
+    "id": "user-manager-56789012-90ab-cdef-1234-567890abcdef",
+    "name": "Robert Wilson",
+    "email": "robert.wilson@example.com",
+    "passwordHash": "$2b$10$example.hash.for.robert.wilson",
+    "phoneNumber": "+1 (555) 876-5432",
+    "role": "MANAGER"
+  },
+  {
+    "id": "user-manager-67890123-90ab-cdef-1234-567890abcdef",
+    "name": "Lisa Thompson",
+    "email": "lisa.thompson@example.com",
+    "passwordHash": "$2b$10$example.hash.for.lisa.thompson",
+    "phoneNumber": "+1 (555) 345-6789",
+    "role": "MANAGER"
+  },
+  {
+    "id": "user-manager-78901234-90ab-cdef-1234-567890abcdef",
+    "name": "Daniel Martinez",
+    "email": "daniel.martinez@example.com",
+    "passwordHash": "$2b$10$example.hash.for.daniel.martinez",
+    "phoneNumber": "+1 (555) 789-0123",
+    "role": "MANAGER"
+  },
+  {
+    "id": "user-manager-89012345-90ab-cdef-1234-567890abcdef",
+    "name": "Olivia Garcia",
+    "email": "olivia.garcia@example.com",
+    "passwordHash": "$2b$10$example.hash.for.olivia.garcia",
+    "phoneNumber": "+1 (555) 678-9012",
+    "role": "MANAGER"
+  },
+  {
+    "id": "user-manager-90123456-90ab-cdef-1234-567890abcdef",
+    "name": "Ethan Rodriguez",
+    "email": "ethan.rodriguez@example.com",
+    "passwordHash": "$2b$10$example.hash.for.ethan.rodriguez",
+    "phoneNumber": "+1 (555) 567-8901",
+    "role": "MANAGER"
+  },
+  {
+    "id": "user-manager-01234567-90ab-cdef-1234-567890abcdef",
+    "name": "Sophia Kim",
+    "email": "sophia.kim@example.com",
+    "passwordHash": "$2b$10$example.hash.for.sophia.kim",
+    "phoneNumber": "+1 (555) 456-7890",
+    "role": "MANAGER"
+  },
+  {
+    "id": "user-tenant-817b3540-a061-707b-742a-a28391181149",
+    "name": "Carol White",
+    "email": "carol.white@example.com",
+    "passwordHash": "$2b$10$example.hash.for.carol.white",
+    "phoneNumber": "+1 (555) 555-6666",
+    "role": "TENANT"
+  },
+  {
+    "id": "user-tenant-87654321-90ab-cdef-1234-567890abcdef",
+    "name": "Bob Green",
+    "email": "bob.green@example.com",
+    "passwordHash": "$2b$10$example.hash.for.bob.green",
+    "phoneNumber": "+1 (555) 333-4444",
+    "role": "TENANT"
+  },
+  {
+    "id": "user-tenant-98765432-90ab-cdef-1234-567890abcdef",
+    "name": "Alice Brown",
+    "email": "alice.brown@example.com",
+    "passwordHash": "$2b$10$example.hash.for.alice.brown",
+    "phoneNumber": "+1 (555) 111-2222",
+    "role": "TENANT"
+  },
+  {
+    "id": "user-tenant-65432109-90ab-cdef-1234-567890abcdef",
+    "name": "David Lee",
+    "email": "david.lee@example.com",
+    "passwordHash": "$2b$10$example.hash.for.david.lee",
+    "phoneNumber": "+1 (555) 777-8888",
+    "role": "TENANT"
+  },
+  {
+    "id": "user-tenant-54321098-90ab-cdef-1234-567890abcdef",
+    "name": "Emma Taylor",
+    "email": "emma.taylor@example.com",
+    "passwordHash": "$2b$10$example.hash.for.emma.taylor",
+    "phoneNumber": "+1 (555) 999-0000",
+    "role": "TENANT"
+  },
+  {
+    "id": "user-tenant-43210987-90ab-cdef-1234-567890abcdef",
+    "name": "Frank Wilson",
+    "email": "frank.wilson@example.com",
+    "passwordHash": "$2b$10$example.hash.for.frank.wilson",
+    "phoneNumber": "+1 (555) 222-3333",
+    "role": "TENANT"
+  },
+  {
+    "id": "user-tenant-32109876-90ab-cdef-1234-567890abcdef",
+    "name": "Grace Miller",
+    "email": "grace.miller@example.com",
+    "passwordHash": "$2b$10$example.hash.for.grace.miller",
+    "phoneNumber": "+1 (555) 444-5555",
+    "role": "TENANT"
+  },
+  {
+    "id": "user-tenant-21098765-90ab-cdef-1234-567890abcdef",
+    "name": "Henry Wilson",
+    "email": "henry.wilson@example.com",
+    "passwordHash": "$2b$10$example.hash.for.henry.wilson",
+    "phoneNumber": "+1 (555) 444-5555",
+    "role": "TENANT"
+  },
+  {
+    "id": "user-tenant-10987654-90ab-cdef-1234-567890abcdef",
+    "name": "Isabella Garcia",
+    "email": "isabella.garcia@example.com",
+    "passwordHash": "$2b$10$example.hash.for.isabella.garcia",
+    "phoneNumber": "+1 (555) 666-7777",
+    "role": "TENANT"
+  },
+  {
+    "id": "user-tenant-09876543-90ab-cdef-1234-567890abcdef",
+    "name": "Jack Thompson",
+    "email": "jack.thompson@example.com",
+    "passwordHash": "$2b$10$example.hash.for.jack.thompson",
+    "phoneNumber": "+1 (555) 888-9999",
+    "role": "TENANT"
+  },
+  {
+    "id": "user-tenant-a9876543-90ab-cdef-1234-567890abcdef",
+    "name": "Karen Martinez",
+    "email": "karen.martinez@example.com",
+    "passwordHash": "$2b$10$example.hash.for.karen.martinez",
+    "phoneNumber": "+1 (555) 123-4567",
+    "role": "TENANT"
+  },
+  {
+    "id": "user-tenant-b9876543-90ab-cdef-1234-567890abcdef",
+    "name": "Liam Johnson",
+    "email": "liam.johnson@example.com",
+    "passwordHash": "$2b$10$example.hash.for.liam.johnson",
+    "phoneNumber": "+1 (555) 987-6543",
+    "role": "TENANT"
+  },
+  {
+    "id": "user-tenant-c9876543-90ab-cdef-1234-567890abcdef",
+    "name": "Mia Rodriguez",
+    "email": "mia.rodriguez@example.com",
+    "passwordHash": "$2b$10$example.hash.for.mia.rodriguez",
+    "phoneNumber": "+1 (555) 246-8135",
+    "role": "TENANT"
+  },
+  {
+    "id": "user-tenant-d9876543-90ab-cdef-1234-567890abcdef",
+    "name": "Noah Kim",
+    "email": "noah.kim@example.com",
+    "passwordHash": "$2b$10$example.hash.for.noah.kim",
+    "phoneNumber": "+1 (555) 369-2580",
+    "role": "TENANT"
+  },
+  {
+    "id": "user-tenant-e9876543-90ab-cdef-1234-567890abcdef",
+    "name": "Olivia Chen",
+    "email": "olivia.chen@example.com",
+    "passwordHash": "$2b$10$example.hash.for.olivia.chen",
+    "phoneNumber": "+1 (555) 159-7531",
+    "role": "TENANT"
+  }
+]

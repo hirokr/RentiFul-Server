@@ -5,13 +5,10 @@ import {
   Param,
   Query,
   Body,
-  UseGuards,
 } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { CreatePropertyDto, QueryPropertyDto } from './dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
+import { RequireManager } from '../auth/decorators/auth-roles.decorator';
 import { GetUser } from '../auth/decorators/get-user.decorator';
 
 @Controller('properties')
@@ -29,8 +26,7 @@ export class PropertyController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('MANAGER')
+  @RequireManager()
   async createProperty(
     @Body() dto: CreatePropertyDto,
     @GetUser() user: any,

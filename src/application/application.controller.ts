@@ -5,23 +5,18 @@ import {
   Put,
   Param,
   Body,
-  UseGuards,
 } from '@nestjs/common';
 import { ApplicationService } from './application.service';
 import { CreateApplicationDto, UpdateApplicationDto } from './dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
+import { RequireTenant, RequireManager, RequireAnyRole } from '../auth/decorators/auth-roles.decorator';
 import { GetUser } from '../auth/decorators/get-user.decorator';
 
 @Controller('applications')
-@UseGuards(JwtAuthGuard)
 export class ApplicationController {
   constructor(private readonly applicationService: ApplicationService) { }
 
   @Post()
-  @UseGuards(RolesGuard)
-  @Roles('TENANT')
+  @RequireTenant()
   async createApplication(
     @Body() dto: CreateApplicationDto,
     @GetUser() user: any,
@@ -32,8 +27,7 @@ export class ApplicationController {
   }
 
   @Put(':id/status')
-  @UseGuards(RolesGuard)
-  @Roles('MANAGER')
+  @RequireManager()
   updateApplicationStatus(
     @Param('id') id: string,
     @Body() dto: UpdateApplicationDto,
@@ -42,8 +36,7 @@ export class ApplicationController {
   }
 
   @Get()
-  @UseGuards(RolesGuard)
-  @Roles('MANAGER', 'TENANT')
+  @RequireAnyRole()
   async listApplications(@GetUser() user: any) {
     let roleSpecificId = user.id;
 

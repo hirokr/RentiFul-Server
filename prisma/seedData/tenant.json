@@ -1,107 +1,77 @@
 [
   {
     "id": "817b3540-a061-707b-742a-a28391181149",
-    "name": "Carol White",
-    "email": "carol.white@example.com",
-    "passwordHash": "$2b$10$example.hash.for.carol.white",
+    "userId": "user-tenant-817b3540-a061-707b-742a-a28391181149",
     "phoneNumber": "+1 (555) 555-6666"
   },
   {
     "id": "87654321-90ab-cdef-1234-567890abcdef",
-    "name": "Bob Green",
-    "email": "bob.green@example.com",
-    "passwordHash": "$2b$10$example.hash.for.bob.green",
+    "userId": "user-tenant-87654321-90ab-cdef-1234-567890abcdef",
     "phoneNumber": "+1 (555) 333-4444"
   },
   {
     "id": "98765432-90ab-cdef-1234-567890abcdef",
-    "name": "Alice Brown",
-    "email": "alice.brown@example.com",
-    "passwordHash": "$2b$10$example.hash.for.alice.brown",
+    "userId": "user-tenant-98765432-90ab-cdef-1234-567890abcdef",
     "phoneNumber": "+1 (555) 111-2222"
   },
   {
     "id": "65432109-90ab-cdef-1234-567890abcdef",
-    "name": "David Lee",
-    "email": "david.lee@example.com",
-    "passwordHash": "$2b$10$example.hash.for.david.lee",
+    "userId": "user-tenant-65432109-90ab-cdef-1234-567890abcdef",
     "phoneNumber": "+1 (555) 777-8888"
   },
   {
     "id": "54321098-90ab-cdef-1234-567890abcdef",
-    "name": "Emma Taylor",
-    "email": "emma.taylor@example.com",
-    "passwordHash": "$2b$10$example.hash.for.emma.taylor",
+    "userId": "user-tenant-54321098-90ab-cdef-1234-567890abcdef",
     "phoneNumber": "+1 (555) 999-0000"
   },
   {
     "id": "43210987-90ab-cdef-1234-567890abcdef",
-    "name": "Frank Wilson",
-    "email": "frank.wilson@example.com",
-    "passwordHash": "$2b$10$example.hash.for.frank.wilson",
+    "userId": "user-tenant-43210987-90ab-cdef-1234-567890abcdef",
     "phoneNumber": "+1 (555) 222-3333"
   },
   {
     "id": "32109876-90ab-cdef-1234-567890abcdef",
-    "name": "Grace Miller",
-    "email": "grace.miller@example.com",
-    "passwordHash": "$2b$10$example.hash.for.grace.miller",
+    "userId": "user-tenant-32109876-90ab-cdef-1234-567890abcdef",
     "phoneNumber": "+1 (555) 444-5555"
   },
   {
     "id": "21098765-90ab-cdef-1234-567890abcdef",
-    "name": "Henry Wilson",
-    "email": "henry.wilson@example.com",
-    "passwordHash": "$2b$10$example.hash.for.henry.wilson",
+    "userId": "user-tenant-21098765-90ab-cdef-1234-567890abcdef",
     "phoneNumber": "+1 (555) 444-5555"
   },
   {
     "id": "10987654-90ab-cdef-1234-567890abcdef",
-    "name": "Isabella Garcia",
-    "email": "isabella.garcia@example.com",
-    "passwordHash": "$2b$10$example.hash.for.isabella.garcia",
+    "userId": "user-tenant-10987654-90ab-cdef-1234-567890abcdef",
     "phoneNumber": "+1 (555) 666-7777"
   },
   {
     "id": "09876543-90ab-cdef-1234-567890abcdef",
-    "name": "Jack Thompson",
-    "email": "jack.thompson@example.com",
-    "passwordHash": "$2b$10$example.hash.for.jack.thompson",
+    "userId": "user-tenant-09876543-90ab-cdef-1234-567890abcdef",
     "phoneNumber": "+1 (555) 888-9999"
   },
   {
     "id": "a9876543-90ab-cdef-1234-567890abcdef",
-    "name": "Karen Martinez",
-    "email": "karen.martinez@example.com",
-    "passwordHash": "$2b$10$example.hash.for.karen.martinez",
+    "userId": "user-tenant-a9876543-90ab-cdef-1234-567890abcdef",
     "phoneNumber": "+1 (555) 123-4567"
   },
   {
     "id": "b9876543-90ab-cdef-1234-567890abcdef",
-    "name": "Liam Johnson",
-    "email": "liam.johnson@example.com",
-    "passwordHash": "$2b$10$example.hash.for.liam.johnson",
+    "userId": "user-tenant-b9876543-90ab-cdef-1234-567890abcdef",
     "phoneNumber": "+1 (555) 987-6543"
   },
   {
     "id": "c9876543-90ab-cdef-1234-567890abcdef",
-    "name": "Mia Rodriguez",
-    "email": "mia.rodriguez@example.com",
-    "passwordHash": "$2b$10$example.hash.for.mia.rodriguez",
+    "userId": "user-tenant-c9876543-90ab-cdef-1234-567890abcdef",
     "phoneNumber": "+1 (555) 246-8135"
   },
   {
     "id": "d9876543-90ab-cdef-1234-567890abcdef",
-    "name": "Noah Kim",
-    "email": "noah.kim@example.com",
-    "passwordHash": "$2b$10$example.hash.for.noah.kim",
+    "userId": "user-tenant-d9876543-90ab-cdef-1234-567890abcdef",
     "phoneNumber": "+1 (555) 369-2580"
   },
   {
     "id": "e9876543-90ab-cdef-1234-567890abcdef",
-    "name": "Olivia Chen",
-    "email": "olivia.chen@example.com",
-    "passwordHash": "$2b$10$example.hash.for.olivia.chen",
+    "userId": "user-tenant-e9876543-90ab-cdef-1234-567890abcdef",
     "phoneNumber": "+1 (555) 159-7531"
   }
 ]

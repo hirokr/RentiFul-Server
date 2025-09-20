@@ -2,16 +2,12 @@ import {
   Controller,
   Get,
   Param,
-  UseGuards,
 } from '@nestjs/common';
 import { LeaseService } from './lease.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
+import { RequireAnyRole } from '../auth/decorators/auth-roles.decorator';
 
 @Controller('leases')
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('MANAGER', 'TENANT')
+@RequireAnyRole()
 export class LeaseController {
   constructor(private readonly leaseService: LeaseService) { }
 
