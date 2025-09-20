@@ -4,179 +4,104 @@
     "name": "Carol White",
     "email": "carol.white@example.com",
     "passwordHash": "$2b$10$example.hash.for.carol.white",
-    "phoneNumber": "+1 (555) 555-6666",
-    "image": null,
-    "provider": null,
-    "providerId": null,
-    "createdAt": "2023-03-05T10:00:00.000Z",
-    "updatedAt": "2023-03-05T10:00:00.000Z"
+    "phoneNumber": "+1 (555) 555-6666"
   },
   {
     "id": "87654321-90ab-cdef-1234-567890abcdef",
     "name": "Bob Green",
     "email": "bob.green@example.com",
     "passwordHash": "$2b$10$example.hash.for.bob.green",
-    "phoneNumber": "+1 (555) 333-4444",
-    "image": null,
-    "provider": null,
-    "providerId": null,
-    "createdAt": "2023-03-10T10:00:00.000Z",
-    "updatedAt": "2023-03-10T10:00:00.000Z"
+    "phoneNumber": "+1 (555) 333-4444"
   },
   {
     "id": "98765432-90ab-cdef-1234-567890abcdef",
     "name": "Alice Brown",
     "email": "alice.brown@example.com",
     "passwordHash": "$2b$10$example.hash.for.alice.brown",
-    "phoneNumber": "+1 (555) 111-2222",
-    "image": null,
-    "provider": null,
-    "providerId": null,
-    "createdAt": "2023-03-15T10:00:00.000Z",
-    "updatedAt": "2023-03-15T10:00:00.000Z"
+    "phoneNumber": "+1 (555) 111-2222"
   },
   {
     "id": "65432109-90ab-cdef-1234-567890abcdef",
     "name": "David Lee",
     "email": "david.lee@example.com",
     "passwordHash": "$2b$10$example.hash.for.david.lee",
-    "phoneNumber": "+1 (555) 777-8888",
-    "image": null,
-    "provider": null,
-    "providerId": null,
-    "createdAt": "2023-03-20T10:00:00.000Z",
-    "updatedAt": "2023-03-20T10:00:00.000Z"
+    "phoneNumber": "+1 (555) 777-8888"
   },
   {
     "id": "54321098-90ab-cdef-1234-567890abcdef",
     "name": "Emma Taylor",
     "email": "emma.taylor@example.com",
     "passwordHash": "$2b$10$example.hash.for.emma.taylor",
-    "phoneNumber": "+1 (555) 999-0000",
-    "image": null,
-    "provider": null,
-    "providerId": null,
-    "createdAt": "2023-03-25T10:00:00.000Z",
-    "updatedAt": "2023-03-25T10:00:00.000Z"
+    "phoneNumber": "+1 (555) 999-0000"
   },
   {
     "id": "43210987-90ab-cdef-1234-567890abcdef",
     "name": "Frank Wilson",
     "email": "frank.wilson@example.com",
     "passwordHash": "$2b$10$example.hash.for.frank.wilson",
-    "phoneNumber": "+1 (555) 222-3333",
-    "image": null,
-    "provider": null,
-    "providerId": null,
-    "createdAt": "2023-03-30T10:00:00.000Z",
-    "updatedAt": "2023-03-30T10:00:00.000Z"
+    "phoneNumber": "+1 (555) 222-3333"
   },
   {
     "id": "32109876-90ab-cdef-1234-567890abcdef",
     "name": "Grace Miller",
     "email": "grace.miller@example.com",
     "passwordHash": "$2b$10$example.hash.for.grace.miller",
-    "phoneNumber": "+1 (555) 444-5555",
-    "image": null,
-    "provider": null,
-    "providerId": null,
-    "createdAt": "2023-04-05T10:00:00.000Z",
-    "updatedAt": "2023-04-05T10:00:00.000Z"
+    "phoneNumber": "+1 (555) 444-5555"
   },
   {
     "id": "21098765-90ab-cdef-1234-567890abcdef",
     "name": "Henry Wilson",
     "email": "henry.wilson@example.com",
     "passwordHash": "$2b$10$example.hash.for.henry.wilson",
-    "phoneNumber": "+1 (555) 444-5555",
-    "image": null,
-    "provider": null,
-    "providerId": null,
-    "createdAt": "2023-04-10T10:00:00.000Z",
-    "updatedAt": "2023-04-10T10:00:00.000Z"
+    "phoneNumber": "+1 (555) 444-5555"
   },
   {
     "id": "10987654-90ab-cdef-1234-567890abcdef",
     "name": "Isabella Garcia",
     "email": "isabella.garcia@example.com",
     "passwordHash": "$2b$10$example.hash.for.isabella.garcia",
-    "phoneNumber": "+1 (555) 666-7777",
-    "image": null,
-    "provider": null,
-    "providerId": null,
-    "createdAt": "2023-04-15T10:00:00.000Z",
-    "updatedAt": "2023-04-15T10:00:00.000Z"
+    "phoneNumber": "+1 (555) 666-7777"
   },
   {
     "id": "09876543-90ab-cdef-1234-567890abcdef",
     "name": "Jack Thompson",
     "email": "jack.thompson@example.com",
     "passwordHash": "$2b$10$example.hash.for.jack.thompson",
-    "phoneNumber": "+1 (555) 888-9999",
-    "image": null,
-    "provider": null,
-    "providerId": null,
-    "createdAt": "2023-04-20T10:00:00.000Z",
-    "updatedAt": "2023-04-20T10:00:00.000Z"
+    "phoneNumber": "+1 (555) 888-9999"
   },
   {
     "id": "a9876543-90ab-cdef-1234-567890abcdef",
     "name": "Karen Martinez",
     "email": "karen.martinez@example.com",
     "passwordHash": "$2b$10$example.hash.for.karen.martinez",
-    "phoneNumber": "+1 (555) 123-4567",
-    "image": null,
-    "provider": null,
-    "providerId": null,
-    "createdAt": "2023-04-25T10:00:00.000Z",
-    "updatedAt": "2023-04-25T10:00:00.000Z"
+    "phoneNumber": "+1 (555) 123-4567"
   },
   {
     "id": "b9876543-90ab-cdef-1234-567890abcdef",
     "name": "Liam Johnson",
     "email": "liam.johnson@example.com",
     "passwordHash": "$2b$10$example.hash.for.liam.johnson",
-    "phoneNumber": "+1 (555) 987-6543",
-    "image": null,
-    "provider": null,
-    "providerId": null,
-    "createdAt": "2023-04-30T10:00:00.000Z",
-    "updatedAt": "2023-04-30T10:00:00.000Z"
+    "phoneNumber": "+1 (555) 987-6543"
   },
   {
     "id": "c9876543-90ab-cdef-1234-567890abcdef",
     "name": "Mia Rodriguez",
     "email": "mia.rodriguez@example.com",
     "passwordHash": "$2b$10$example.hash.for.mia.rodriguez",
-    "phoneNumber": "+1 (555) 246-8135",
-    "image": null,
-    "provider": null,
-    "providerId": null,
-    "createdAt": "2023-05-05T10:00:00.000Z",
-    "updatedAt": "2023-05-05T10:00:00.000Z"
+    "phoneNumber": "+1 (555) 246-8135"
   },
   {
     "id": "d9876543-90ab-cdef-1234-567890abcdef",
     "name": "Noah Kim",
     "email": "noah.kim@example.com",
     "passwordHash": "$2b$10$example.hash.for.noah.kim",
-    "phoneNumber": "+1 (555) 369-2580",
-    "image": null,
-    "provider": null,
-    "providerId": null,
-    "createdAt": "2023-05-10T10:00:00.000Z",
-    "updatedAt": "2023-05-10T10:00:00.000Z"
+    "phoneNumber": "+1 (555) 369-2580"
   },
   {
     "id": "e9876543-90ab-cdef-1234-567890abcdef",
     "name": "Olivia Chen",
     "email": "olivia.chen@example.com",
     "passwordHash": "$2b$10$example.hash.for.olivia.chen",
-    "phoneNumber": "+1 (555) 159-7531",
-    "image": null,
-    "provider": null,
-    "providerId": null,
-    "createdAt": "2023-05-15T10:00:00.000Z",
-    "updatedAt": "2023-05-15T10:00:00.000Z"
+    "phoneNumber": "+1 (555) 159-7531"
   }
 ]

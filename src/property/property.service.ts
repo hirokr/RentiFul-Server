@@ -195,11 +195,25 @@ export class PropertyService {
         state,
         country,
         postalCode,
-        photoUrls = [],
-        amenities = [],
-        highlights = [],
+        amenities,
+        highlights,
         ...propertyData
       } = dto;
+
+      const parsedAmenities = Array.isArray(amenities)
+        ? amenities
+        : amenities
+          ? JSON.parse(amenities)
+          : [];
+
+      const parsedHighlights = Array.isArray(highlights)
+        ? highlights
+        : highlights
+          ? JSON.parse(highlights)
+          : [];
+
+      // Photo URLs are now provided by the frontend
+      const photoUrls = dto.photoUrls || [];
 
       // Geocode address
       const geocodingUrl = `https://nominatim.openstreetmap.org/search?${new URLSearchParams(
@@ -241,8 +255,8 @@ export class PropertyService {
           photoUrls,
           locationId: location[0].id,
           managerId,
-          amenities,
-          highlights,
+          amenities: parsedAmenities,
+          highlights: parsedHighlights,
         },
         include: {
           location: true,

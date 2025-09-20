@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsBoolean, IsArray, IsOptional, IsEnum, IsUrl } from 'class-validator';
+import { IsString, IsNumber, IsBoolean, IsArray, IsOptional, IsEnum } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { PropertyType, Amenity, Highlight } from '@prisma/client';
 
@@ -9,46 +9,45 @@ export class CreatePropertyDto {
   @IsString()
   description: string;
 
+  @Transform(({ value }) => parseFloat(value))
   @IsNumber()
   pricePerMonth: number;
 
+  @Transform(({ value }) => parseFloat(value))
   @IsNumber()
   securityDeposit: number;
 
+  @Transform(({ value }) => parseFloat(value))
   @IsNumber()
   applicationFee: number;
 
   @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  photoUrls?: string[];
+  amenities?: any[];
 
   @IsOptional()
-  @IsArray()
-  @IsEnum(Amenity, { each: true })
-  amenities?: Amenity[];
+  highlights?: any[];
 
-  @IsOptional()
-  @IsArray()
-  @IsEnum(Highlight, { each: true })
-  highlights?: Highlight[];
-
+  @Transform(({ value }) => value === 'true')
   @IsBoolean()
   isPetsAllowed: boolean;
 
+  @Transform(({ value }) => value === 'true')
   @IsBoolean()
   isParkingIncluded: boolean;
 
+  @Transform(({ value }) => parseInt(value))
   @IsNumber()
   beds: number;
 
+  @Transform(({ value }) => parseFloat(value))
   @IsNumber()
   baths: number;
 
+  @Transform(({ value }) => parseInt(value))
   @IsNumber()
   squareFeet: number;
 
-  @IsEnum(PropertyType)
+  @IsEnum(['Rooms', 'Tinyhouse', 'Apartment', 'Villa', 'Townhouse', 'Cottage'])
   propertyType: PropertyType;
 
   // Location fields
@@ -66,4 +65,9 @@ export class CreatePropertyDto {
 
   @IsString()
   postalCode: string;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  photoUrls?: string[];
 }

@@ -8,7 +8,6 @@ import { PropertyModule } from './property/property.module';
 import { LeaseModule } from './lease/lease.module';
 import { ApplicationModule } from './application/application.module';
 import { AuthModule } from './auth/auth.module';
-
 @Module({
   imports: [
     PrismaDbModule,

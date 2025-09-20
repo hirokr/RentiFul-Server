@@ -1,280 +1,187 @@
 import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { PrismaDbService } from '../prisma-db/prisma-db.service';
 import * as bcrypt from 'bcryptjs';
-import type { CreateUserDto, ValidateCredentialsDto } from './dto';
-
-
+import { LoginDto, RegisterDto } from './dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaDbService) { }
+  constructor(
+    private prisma: PrismaDbService,
+    private jwtService: JwtService,
+  ) { }
 
-  async validateCredentials(dto: ValidateCredentialsDto) {
-    const { email, password } = dto;
+  async register(dto: RegisterDto) {
+    const { email, password, name, phoneNumber, role, imageUrl } = dto;
 
-    // Check tenant first
-    let user = await this.prisma.tenant.findUnique({
+    // Check if user already exists
+    const existingUser = await this.prisma.user.findUnique({
       where: { email },
     });
-    let role = 'tenant';
 
-    // If not found in tenants, check managers
-    if (!user) {
-      user = await this.prisma.manager.findUnique({
-        where: { email },
-      });
-      role = 'manager';
+    if (existingUser) {
+      throw new ConflictException('User with this email already exists');
     }
 
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    // Create user with transaction to ensure consistency
+    const result = await this.prisma.$transaction(async (tx) => {
+      // Create the user
+      const user = await tx.user.create({
+        data: {
+          email,
+          passwordHash: hashedPassword,
+          name,
+          phoneNumber,
+          role,
+          image: imageUrl,
+        },
+      });
+
+      // Create the role-specific record
+      if (role === 'TENANT') {
+        await tx.tenant.create({
+          data: {
+            userId: user.id,
+            phoneNumber,
+          },
+        });
+      } else if (role === 'MANAGER') {
+        await tx.manager.create({
+          data: {
+            userId: user.id,
+            phoneNumber,
+          },
+        });
+      }
+
+      return user;
+    });
+
+    const payload = { sub: result.id, email: result.email, role: result.role };
+    const token = this.jwtService.sign(payload);
+
+    return {
+      access_token: token,
+      user: {
+        id: result.id,
+        email: result.email,
+        name: result.name,
+        role: result.role,
+        image: result.image,
+      },
+    };
+  }
+
+  async login(dto: LoginDto) {
+    const { email, password } = dto;
+
+    // Find user by email
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
     if (!user || !user.passwordHash) {
-      return null;
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     // Verify password
     const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
     if (!isPasswordValid) {
-      return null;
+      throw new UnauthorizedException('Invalid credentials');
     }
 
+    const payload = { sub: user.id, email: user.email, role: user.role };
+    const token = this.jwtService.sign(payload);
+
     return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      image: user.image,
-      role,
+      access_token: token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        image: user.image,
+      },
     };
   }
 
-  async createUser(dto: CreateUserDto) {
-    const { email, name, role, password, phoneNumber, image, provider, providerId } = dto;
+  async validateUser(payload: any) {
+    const { sub } = payload;
 
-    // For OAuth providers, check if user exists by provider first
-    if (provider && provider !== 'credentials' && providerId) {
-      const existingUser = await this.findUserByProvider(provider, providerId);
-      if (existingUser) {
-        // Update existing OAuth user
-        return this.updateOAuthUser(existingUser.id, existingUser.role, {
-          email,
-          name,
-          image,
-        });
-      }
+    const user = await this.prisma.user.findUnique({
+      where: { id: sub },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException();
     }
 
-    // Check if user already exists by email
-    const existingUser = await this.findUserByEmail(email);
-    if (existingUser) {
-      // If it's an OAuth login and user exists with credentials, link the accounts
-      if (provider && provider !== 'credentials' && providerId) {
-        return this.linkOAuthAccount(existingUser.id, existingUser.role, {
-          provider,
-          providerId,
-          image,
-        });
-      }
-      throw new ConflictException('User with this email already exists');
-    }
-
-    // Hash password if provided (for credentials provider)
-    const hashedPassword = password ? await bcrypt.hash(password, 12) : null;
-
-    let user;
-    if (role === 'tenant') {
-      user = await this.prisma.tenant.create({
-        data: {
-          email,
-          name,
-          passwordHash: hashedPassword,
-          phoneNumber,
-          image,
-          provider: provider || 'credentials',
-          providerId,
-        },
-      });
-    } else if (role === 'manager') {
-      user = await this.prisma.manager.create({
-        data: {
-          email,
-          name,
-          passwordHash: hashedPassword,
-          phoneNumber,
-          image,
-          provider: provider || 'credentials',
-          providerId,
-        },
-      });
-    } else {
-      throw new UnauthorizedException('Invalid role');
-    }
-
-    return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      image: user.image,
-      role,
-      provider: user.provider,
-    };
+    return user;
   }
 
-  async updateOAuthUser(userId: string, role: string, updateData: { email: string; name: string; image?: string }) {
-    let user;
-    if (role === 'tenant') {
-      user = await this.prisma.tenant.update({
-        where: { id: userId },
-        data: {
-          email: updateData.email,
-          name: updateData.name,
-          image: updateData.image,
-        },
-      });
-    } else {
-      user = await this.prisma.manager.update({
-        where: { id: userId },
-        data: {
-          email: updateData.email,
-          name: updateData.name,
-          image: updateData.image,
-        },
-      });
-    }
-
-    return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      image: user.image,
-      role,
-      provider: user.provider,
-    };
-  }
-
-  async linkOAuthAccount(userId: string, role: string, oauthData: { provider: string; providerId: string; image?: string }) {
-    let user;
-    if (role === 'tenant') {
-      user = await this.prisma.tenant.update({
-        where: { id: userId },
-        data: {
-          provider: oauthData.provider,
-          providerId: oauthData.providerId,
-          image: oauthData.image || undefined,
-        },
-      });
-    } else {
-      user = await this.prisma.manager.update({
-        where: { id: userId },
-        data: {
-          provider: oauthData.provider,
-          providerId: oauthData.providerId,
-          image: oauthData.image || undefined,
-        },
-      });
-    }
-
-    return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      image: user.image,
-      role,
-      provider: user.provider,
-    };
-  }
-
+  // Method for NextAuth.js integration
   async findUserByEmail(email: string) {
-    // Check tenant first
-    let user = await this.prisma.tenant.findUnique({
+    return this.prisma.user.findUnique({
       where: { email },
     });
-    let role = 'tenant';
+  }
 
-    // If not found in tenants, check managers
-    if (!user) {
-      user = await this.prisma.manager.findUnique({
+  // Method for OAuth user creation/update
+  async createOrUpdateOAuthUser(userData: {
+    email: string;
+    name?: string;
+    image?: string;
+    role?: 'TENANT' | 'MANAGER';
+  }) {
+    const { email, name, image, role = 'TENANT' } = userData;
+
+    const existingUser = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (existingUser) {
+      // Update existing user
+      return this.prisma.user.update({
         where: { email },
-      });
-      role = 'manager';
-    }
-
-    if (!user) {
-      return null;
-    }
-
-    return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      image: user.image,
-      role,
-      provider: user.provider,
-    };
-  }
-
-  async findUserByProvider(provider: string, providerId: string) {
-    // Check tenant first
-    let user = await this.prisma.tenant.findUnique({
-      where: {
-        provider_providerId: {
-          provider,
-          providerId,
+        data: {
+          name: name || existingUser.name,
+          image: image || existingUser.image,
         },
-      },
-    });
-    let role = 'tenant';
+      });
+    }
 
-    // If not found in tenants, check managers
-    if (!user) {
-      user = await this.prisma.manager.findUnique({
-        where: {
-          provider_providerId: {
-            provider,
-            providerId,
+    // Create new user with transaction
+    return this.prisma.$transaction(async (tx) => {
+      const user = await tx.user.create({
+        data: {
+          email,
+          name,
+          image,
+          role,
+        },
+      });
+
+      // Create role-specific record
+      if (role === 'TENANT') {
+        await tx.tenant.create({
+          data: {
+            userId: user.id,
+            phoneNumber: '', // Will need to be updated later
           },
-        },
-      });
-      role = 'manager';
-    }
+        });
+      } else if (role === 'MANAGER') {
+        await tx.manager.create({
+          data: {
+            userId: user.id,
+            phoneNumber: '', // Will need to be updated later
+          },
+        });
+      }
 
-    if (!user) {
-      return null;
-    }
-
-    return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      image: user.image,
-      role,
-      provider: user.provider,
-    };
-  }
-
-  async getUserById(id: string) {
-    // Check tenant first
-    let user = await this.prisma.tenant.findUnique({
-      where: { id },
+      return user;
     });
-    let role = 'tenant';
-
-    // If not found in tenants, check managers
-    if (!user) {
-      user = await this.prisma.manager.findUnique({
-        where: { id },
-      });
-      role = 'manager';
-    }
-
-    if (!user) {
-      return null;
-    }
-
-    return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      image: user.image,
-      role,
-      provider: user.provider,
-    };
   }
 }

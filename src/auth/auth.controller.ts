@@ -1,48 +1,49 @@
-import { Controller, Post, Body, Get, Param, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDto, ValidateCredentialsDto, LinkOAuthAccountDto } from './dto';
+import { LoginDto, RegisterDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
+  @Post('manual_register')
+  register(@Body() dto: RegisterDto) {
+    return this.authService.register(dto);
+  }
+
+  @Post('login')
+  login(@Body() dto: LoginDto) {
+    return this.authService.login(dto);
+  }
+
+  // Endpoint for NextAuth.js credentials validation
   @Post('validate-credentials')
-  @HttpCode(HttpStatus.OK)
-  validateCredentials(@Body() dto: ValidateCredentialsDto) {
-    return this.authService.validateCredentials(dto);
+  async validateCredentials(@Body() dto: LoginDto) {
+    try {
+      const result = await this.authService.login(dto);
+      return result.user; // Return user data for NextAuth
+    } catch (error) {
+      return null; // NextAuth expects null for invalid credentials
+    }
   }
 
-  @Post('create-user')
-  @HttpCode(HttpStatus.CREATED)
-  createUser(@Body() dto: CreateUserDto) {
-    return this.authService.createUser(dto);
-  }
-
-  @Get('user/email/:email')
-  findUserByEmail(@Param('email') email: string) {
+  // Endpoint for NextAuth.js to find user by email
+  @Get('user')
+  async getUserByEmail(@Query('email') email: string) {
+    if (!email) {
+      return null;
+    }
     return this.authService.findUserByEmail(email);
   }
 
-  @Get('user/provider/:provider/:providerId')
-  findUserByProvider(
-    @Param('provider') provider: string,
-    @Param('providerId') providerId: string,
-  ) {
-    return this.authService.findUserByProvider(provider, providerId);
-  }
-
-  @Get('user/:id')
-  getUserById(@Param('id') id: string) {
-    return this.authService.getUserById(id);
-  }
-
-  @Post('link-oauth-account')
-  @HttpCode(HttpStatus.OK)
-  linkOAuthAccount(@Body() dto: LinkOAuthAccountDto) {
-    return this.authService.linkOAuthAccount(dto.userId, dto.role, {
-      provider: dto.provider,
-      providerId: dto.providerId,
-      image: dto.image,
-    });
+  // Endpoint for OAuth user creation/update
+  @Post('oauth-user')
+  async createOrUpdateOAuthUser(@Body() userData: {
+    email: string;
+    name?: string;
+    image?: string;
+    role?: 'TENANT' | 'MANAGER';
+  }) {
+    return this.authService.createOrUpdateOAuthUser(userData);
   }
 }

@@ -30,7 +30,7 @@ export class PropertyController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('manager')
+  @Roles('MANAGER')
   createProperty(
     @Body() dto: CreatePropertyDto,
     @GetUser() user: any,

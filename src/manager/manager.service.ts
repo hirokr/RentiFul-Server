@@ -3,31 +3,60 @@ import { PrismaDbService } from '../prisma-db/prisma-db.service';
 
 @Injectable()
 export class ManagerService {
-  constructor(private prisma: PrismaDbService) {}
+  constructor(private prisma: PrismaDbService) { }
 
   async getManager(id: string) {
     const manager = await this.prisma.manager.findUnique({
       where: { id },
+      include: {
+        user: true,
+      },
     });
 
     if (!manager) {
       throw new NotFoundException('Manager not found');
     }
+
     const payload = {
-      name: manager.name,
+      name: manager.user.name,
       id: manager.id,
-      email: manager.email,
-      phoneNumber: manager.phoneNumber
+      email: manager.user.email,
+      phoneNumber: manager.phoneNumber,
+      image: manager.user.image,
     }
     return payload;
   }
 
   async updateManager(id: string, updateData: { name?: string; email?: string; phoneNumber?: string }) {
     try {
+      const manager = await this.prisma.manager.findUnique({
+        where: { id },
+        include: { user: true },
+      });
+
+      if (!manager) {
+        throw new NotFoundException('Manager not found');
+      }
+
+      // Update manager-specific fields
       const updatedManager = await this.prisma.manager.update({
         where: { id },
-        data: updateData,
+        data: {
+          phoneNumber: updateData.phoneNumber || manager.phoneNumber,
+        },
+        include: { user: true },
       });
+
+      // Update user fields if provided
+      if (updateData.name || updateData.email) {
+        await this.prisma.user.update({
+          where: { id: manager.userId },
+          data: {
+            name: updateData.name || manager.user.name,
+            email: updateData.email || manager.user.email,
+          },
+        });
+      }
 
       return updatedManager;
     } catch (error) {

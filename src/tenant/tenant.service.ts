@@ -7,26 +7,30 @@ import { PrismaDbService } from '../prisma-db/prisma-db.service';
 
 @Injectable()
 export class TenantService {
-  constructor(private prisma: PrismaDbService) {}
+  constructor(private prisma: PrismaDbService) { }
 
   async getTenant(id: string) {
     const tenant = await this.prisma.tenant.findUnique({
       where: { id },
       include: {
         favorites: true,
+        user: true,
       },
     });
 
     if (!tenant) {
       throw new NotFoundException('Tenant not found');
     }
-    const paylod = {
+
+    const payload = {
       id: tenant.id,
-      name: tenant.name,
-      email: tenant.email,
+      name: tenant.user.name,
+      email: tenant.user.email,
+      phoneNumber: tenant.phoneNumber,
+      image: tenant.user.image,
       favorites: tenant.favorites,
     };
-    return paylod;
+    return payload;
   }
 
   async updateTenant(
@@ -34,10 +38,34 @@ export class TenantService {
     updateData: { name?: string; email?: string; phoneNumber?: string },
   ) {
     try {
+      const tenant = await this.prisma.tenant.findUnique({
+        where: { id },
+        include: { user: true },
+      });
+
+      if (!tenant) {
+        throw new NotFoundException('Tenant not found');
+      }
+
+      // Update tenant-specific fields
       const updatedTenant = await this.prisma.tenant.update({
         where: { id },
-        data: updateData,
+        data: {
+          phoneNumber: updateData.phoneNumber || tenant.phoneNumber,
+        },
+        include: { user: true },
       });
+
+      // Update user fields if provided
+      if (updateData.name || updateData.email) {
+        await this.prisma.user.update({
+          where: { id: tenant.userId },
+          data: {
+            name: updateData.name || tenant.user.name,
+            email: updateData.email || tenant.user.email,
+          },
+        });
+      }
 
       return updatedTenant;
     } catch (error) {

@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
-export class ValidateCredentialsDto {
+export class LoginDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
@@ -9,6 +9,3 @@ export class ValidateCredentialsDto {
   @IsNotEmpty()
   password: string;
 }
-
-// Keep old name for backward compatibility
-export const LoginDto = ValidateCredentialsDto;
