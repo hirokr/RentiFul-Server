@@ -4,15 +4,39 @@ import { CreateApplicationDto, UpdateApplicationDto } from './dto';
 
 @Injectable()
 export class ApplicationService {
-  constructor(private prisma: PrismaDbService) {}
+  constructor(private prisma: PrismaDbService) { }
+
+  async getTenantByUserId(userId: string) {
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { userId },
+    });
+
+    if (!tenant) {
+      throw new NotFoundException('Tenant not found');
+    }
+
+    return tenant;
+  }
+
+  async getManagerByUserId(userId: string) {
+    const manager = await this.prisma.manager.findUnique({
+      where: { userId },
+    });
+
+    if (!manager) {
+      throw new NotFoundException('Manager not found');
+    }
+
+    return manager;
+  }
 
   async listApplications(userId: string, userRole: string) {
     try {
       let whereClause = {};
 
-      if (userRole === 'tenant') {
+      if (userRole === 'TENANT') {
         whereClause = { tenantId: userId };
-      } else if (userRole === 'manager') {
+      } else if (userRole === 'MANAGER') {
         whereClause = {
           property: {
             managerId: userId,
@@ -26,10 +50,18 @@ export class ApplicationService {
           property: {
             include: {
               location: true,
-              manager: true,
+              manager: {
+                include: {
+                  user: true,
+                },
+              },
             },
           },
-          tenant: true,
+          tenant: {
+            include: {
+              user: true,
+            },
+          },
           lease: true,
         },
       });
@@ -49,12 +81,23 @@ export class ApplicationService {
           ...app.property,
           address: app.property.location.address,
         },
-        manager: app.property.manager,
+        manager: {
+          ...app.property.manager,
+          name: app.property.manager.user.name,
+          email: app.property.manager.user.email,
+          image: app.property.manager.user.image,
+        },
+        tenant: {
+          ...app.tenant,
+          name: app.tenant.user.name,
+          email: app.tenant.user.email,
+          image: app.tenant.user.image,
+        },
         lease: app.lease
           ? {
-              ...app.lease,
-              nextPaymentDate: calculateNextPaymentDate(app.lease.startDate),
-            }
+            ...app.lease,
+            nextPaymentDate: calculateNextPaymentDate(app.lease.startDate),
+          }
           : null,
       }));
 
@@ -104,8 +147,21 @@ export class ApplicationService {
             leaseId: lease.id,
           },
           include: {
-            property: true,
-            tenant: true,
+            property: {
+              include: {
+                location: true,
+                manager: {
+                  include: {
+                    user: true,
+                  },
+                },
+              },
+            },
+            tenant: {
+              include: {
+                user: true,
+              },
+            },
             lease: true,
           },
         });
@@ -127,8 +183,21 @@ export class ApplicationService {
       const application = await this.prisma.application.findUnique({
         where: { id },
         include: {
-          property: true,
-          tenant: true,
+          property: {
+            include: {
+              location: true,
+              manager: {
+                include: {
+                  user: true,
+                },
+              },
+            },
+          },
+          tenant: {
+            include: {
+              user: true,
+            },
+          },
         },
       });
 
@@ -177,8 +246,21 @@ export class ApplicationService {
       const updatedApplication = await this.prisma.application.findUnique({
         where: { id },
         include: {
-          property: true,
-          tenant: true,
+          property: {
+            include: {
+              location: true,
+              manager: {
+                include: {
+                  user: true,
+                },
+              },
+            },
+          },
+          tenant: {
+            include: {
+              user: true,
+            },
+          },
           lease: true,
         },
       });

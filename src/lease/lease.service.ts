@@ -3,14 +3,27 @@ import { PrismaDbService } from '../prisma-db/prisma-db.service';
 
 @Injectable()
 export class LeaseService {
-  constructor(private prisma: PrismaDbService) {}
+  constructor(private prisma: PrismaDbService) { }
 
   async getLeases() {
     try {
       const leases = await this.prisma.lease.findMany({
         include: {
-          tenant: true,
-          property: true,
+          tenant: {
+            include: {
+              user: true,
+            },
+          },
+          property: {
+            include: {
+              location: true,
+              manager: {
+                include: {
+                  user: true,
+                },
+              },
+            },
+          },
         },
       });
       return leases;

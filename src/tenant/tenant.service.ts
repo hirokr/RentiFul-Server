@@ -9,6 +9,18 @@ import { PrismaDbService } from '../prisma-db/prisma-db.service';
 export class TenantService {
   constructor(private prisma: PrismaDbService) { }
 
+  async getTenantByUserId(userId: string) {
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { userId },
+    });
+
+    if (!tenant) {
+      throw new NotFoundException('Tenant not found');
+    }
+
+    return tenant;
+  }
+
   async getTenant(id: string) {
     const tenant = await this.prisma.tenant.findUnique({
       where: { id },

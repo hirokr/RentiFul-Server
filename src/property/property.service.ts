@@ -10,6 +10,18 @@ export class PropertyService {
     private prisma: PrismaDbService,
   ) { }
 
+  async getManagerByUserId(userId: string) {
+    const manager = await this.prisma.manager.findUnique({
+      where: { userId },
+    });
+
+    if (!manager) {
+      throw new NotFoundException('Manager not found');
+    }
+
+    return manager;
+  }
+
   async getProperties(query: QueryPropertyDto) {
     try {
       const {
@@ -141,7 +153,11 @@ export class PropertyService {
         where: { id },
         include: {
           location: true,
-          manager: true,
+          manager: {
+            include: {
+              user: true,
+            },
+          },
         },
       });
 
@@ -260,7 +276,11 @@ export class PropertyService {
         },
         include: {
           location: true,
-          manager: true,
+          manager: {
+            include: {
+              user: true,
+            },
+          },
         },
       });
 

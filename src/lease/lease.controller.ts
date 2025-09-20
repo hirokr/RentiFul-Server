@@ -11,9 +11,9 @@ import { Roles } from '../auth/decorators/roles.decorator';
 
 @Controller('leases')
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('manager', 'tenant')
+@Roles('MANAGER', 'TENANT')
 export class LeaseController {
-  constructor(private readonly leaseService: LeaseService) {}
+  constructor(private readonly leaseService: LeaseService) { }
 
   @Get()
   getLeases() {

@@ -5,6 +5,18 @@ import { PrismaDbService } from '../prisma-db/prisma-db.service';
 export class ManagerService {
   constructor(private prisma: PrismaDbService) { }
 
+  async getManagerByUserId(userId: string) {
+    const manager = await this.prisma.manager.findUnique({
+      where: { userId },
+    });
+
+    if (!manager) {
+      throw new NotFoundException('Manager not found');
+    }
+
+    return manager;
+  }
+
   async getManager(id: string) {
     const manager = await this.prisma.manager.findUnique({
       where: { id },

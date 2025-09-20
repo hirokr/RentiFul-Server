@@ -31,10 +31,12 @@ export class PropertyController {
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('MANAGER')
-  createProperty(
+  async createProperty(
     @Body() dto: CreatePropertyDto,
     @GetUser() user: any,
   ) {
-    return this.propertyService.createProperty(dto, user.id);
+    // Find the manager record for this user
+    const manager = await this.propertyService.getManagerByUserId(user.id);
+    return this.propertyService.createProperty(dto, manager.id);
   }
 }
