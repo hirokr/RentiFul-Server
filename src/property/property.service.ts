@@ -6,9 +6,7 @@ import axios from 'axios';
 
 @Injectable()
 export class PropertyService {
-  constructor(
-    private prisma: PrismaDbService,
-  ) { }
+  constructor(private prisma: PrismaDbService) {}
 
   async getManagerByUserId(userId: string) {
     const manager = await this.prisma.manager.findUnique({
@@ -39,49 +37,47 @@ export class PropertyService {
         longitude,
       } = query;
 
-      let whereConditions: Prisma.Sql[] = [];
+      let whereConditions: string[] = [];
 
       if (favoriteIds) {
-        const favoriteIdsArray = favoriteIds.split(',');
-        whereConditions.push(
-          Prisma.sql`p.id IN (${Prisma.join(favoriteIdsArray, ',')})`,
-        );
+        const favoriteIdsArray = favoriteIds.split(',').map((id) => `'${id}'`);
+        whereConditions.push(`p.id IN (${favoriteIdsArray.join(',')})`);
       }
 
       if (priceMin) {
-        whereConditions.push(Prisma.sql`p."pricePerMonth" >= ${priceMin}`);
+        whereConditions.push(`p."pricePerMonth" >= ${priceMin}`);
       }
 
       if (priceMax) {
-        whereConditions.push(Prisma.sql`p."pricePerMonth" <= ${priceMax}`);
+        whereConditions.push(`p."pricePerMonth" <= ${priceMax}`);
       }
 
       if (beds && beds !== 0) {
-        whereConditions.push(Prisma.sql`p.beds >= ${beds}`);
+        whereConditions.push(`p.beds >= ${beds}`);
       }
 
       if (baths && baths !== 0) {
-        whereConditions.push(Prisma.sql`p.baths >= ${baths}`);
+        whereConditions.push(`p.baths >= ${baths}`);
       }
 
       if (squareFeetMin) {
-        whereConditions.push(Prisma.sql`p."squareFeet" >= ${squareFeetMin}`);
+        whereConditions.push(`p."squareFeet" >= ${squareFeetMin}`);
       }
 
       if (squareFeetMax) {
-        whereConditions.push(Prisma.sql`p."squareFeet" <= ${squareFeetMax}`);
+        whereConditions.push(`p."squareFeet" <= ${squareFeetMax}`);
       }
 
       if (propertyType && propertyType !== 'any') {
         whereConditions.push(
-          Prisma.sql`p."propertyType" = ${propertyType}::"PropertyType"`,
+          `p."propertyType" = '${propertyType}'::"PropertyType"`,
         );
       }
 
       if (amenities && amenities !== 'any') {
-        const amenitiesArray = amenities.split(',');
+        const amenitiesArray = amenities.split(',').map((a) => `'${a}'`);
         whereConditions.push(
-          Prisma.sql`p.amenities @> ${amenitiesArray}::"Amenity"[]`,
+          `p.amenities @> ARRAY[${amenitiesArray.join(',')}]::"Amenity"[]`,
         );
       }
 
@@ -89,10 +85,10 @@ export class PropertyService {
         const date = new Date(availableFrom);
         if (!isNaN(date.getTime())) {
           whereConditions.push(
-            Prisma.sql`EXISTS (
+            `EXISTS (
               SELECT 1 FROM "Lease" l 
               WHERE l."propertyId" = p.id 
-              AND l."startDate" >= ${date.toISOString()}::timestamp
+              AND l."startDate" >= '${date.toISOString()}'::timestamp
             )`,
           );
         }
@@ -103,7 +99,7 @@ export class PropertyService {
         const degrees = radiusInKilometers / 111;
 
         whereConditions.push(
-          Prisma.sql`ST_DWithin(
+          `ST_DWithin(
             l.coordinates::geometry,
             ST_SetSRID(ST_MakePoint(${longitude}, ${latitude}), 4326),
             ${degrees}
@@ -111,7 +107,12 @@ export class PropertyService {
         );
       }
 
-      const completeQuery = Prisma.sql`
+      const whereClause =
+        whereConditions.length > 0
+          ? `WHERE ${whereConditions.join(' AND ')}`
+          : '';
+
+      const completeQuery = `
         SELECT 
           p.*,
           json_build_object(
@@ -134,13 +135,10 @@ export class PropertyService {
           ) as availableFrom
         FROM "Property" p
         JOIN "Location" l ON p."locationId" = l.id
-        ${whereConditions.length > 0
-          ? Prisma.sql`WHERE ${Prisma.join(whereConditions, ' AND ')}`
-          : Prisma.empty
-        }
+        ${whereClause}
       `;
 
-      const properties = await this.prisma.$queryRaw(completeQuery);
+      const properties = await this.prisma.$queryRawUnsafe(completeQuery);
       return properties;
     } catch (error) {
       throw new Error(`Error retrieving properties: ${error.message}`);
@@ -200,10 +198,7 @@ export class PropertyService {
     }
   }
 
-  async createProperty(
-    dto: CreatePropertyDto,
-    managerId: string,
-  ) {
+  async createProperty(dto: CreatePropertyDto, managerId: string) {
     try {
       const {
         address,
@@ -252,9 +247,9 @@ export class PropertyService {
       const [longitude, latitude] =
         geocodingResponse.data[0]?.lon && geocodingResponse.data[0]?.lat
           ? [
-            parseFloat(geocodingResponse.data[0]?.lon),
-            parseFloat(geocodingResponse.data[0]?.lat),
-          ]
+              parseFloat(geocodingResponse.data[0]?.lon),
+              parseFloat(geocodingResponse.data[0]?.lat),
+            ]
           : [0, 0];
 
       // Create location

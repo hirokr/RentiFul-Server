@@ -49,9 +49,9 @@ async function resetSequence(modelName: string) {
   const maxId = maxIdResult[0].id;
 
   // Get the sequence name
-  const sequenceNameResult = await prisma.$queryRawUnsafe<any[]>(
+  const sequenceNameResult = (await prisma.$queryRawUnsafe(
     `SELECT pg_get_serial_sequence('${quotedModelName}', 'id') as seq_name;`,
-  );
+  )) as any[];
   const sequenceName = sequenceNameResult[0]?.seq_name;
   if (!sequenceName) {
     console.error(`Could not find sequence for ${modelName}`);
