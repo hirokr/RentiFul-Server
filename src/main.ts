@@ -7,7 +7,7 @@ async function bootstrap() {
 
   // Enable CORS
   app.enableCors({
-    origin: true,
+    origin: ["https://homex-ten.vercel.app", "http://localhost:3000"],
     credentials: true,
   });
 
